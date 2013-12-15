@@ -17,18 +17,10 @@ use traits::{GtkWidget};
 use ffi;
 use gtk;
 
+/// Can not be explicitly instantiated
 pub struct Widget {
-    priv pointer:           *ffi::C_GtkWidget
+    priv pointer:           *ffi::C_GtkWidget,
+    priv can_drop:          bool,
 }
 
-impl Widget {
-    pub fn wrap(pointer: *ffi::C_GtkWidget) -> Widget {
-        Widget {
-            pointer: pointer
-        }
-    }
-
-    pub fn to_entry(self) -> gtk::Entry {
-        GtkWidget::wrap_widget(self.pointer)
-    }
-}
+impl_GtkWidget!(Widget)

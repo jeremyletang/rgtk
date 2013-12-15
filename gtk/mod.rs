@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with rgtk.  If not, see <http://www.gnu.org/licenses/>.
 
+pub use gtk::widget::Widget;
 pub use gtk::window::Window;
 pub use gtk::label::Label;
 pub use gtk::button::Button;
@@ -58,6 +59,7 @@ pub use gtk::menutoolbutton::MenuToolButton;
 
 pub mod enums;
 pub mod version;
+pub mod widget;
 pub mod window;
 pub mod label;
 pub mod button;
@@ -102,5 +104,3 @@ pub mod toggletoolbutton;
 pub mod menutoolbutton;
 
 pub mod cast;
-
-
