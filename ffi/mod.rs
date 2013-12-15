@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with rgtk.  If not, see <http://www.gnu.org/licenses/>.
 
-use std::libc::{c_int, c_char, c_void, c_float, c_uint, c_double, c_long, c_short};
+use std::libc::{c_int, c_char, c_void, c_float, c_uint, c_double, c_long, c_ulong, c_short};
 
 use gtk::enums::*;
 use gdk;
@@ -75,6 +75,8 @@ pub struct C_GtkSeparatorToolItem;
 pub struct C_GtkMenu;
 pub struct C_GMenuModel;
 
+pub struct C_GClosure;
+
 pub struct C_GdkEvent;
 pub struct C_GdkWindow;
 
@@ -83,6 +85,14 @@ pub struct C_GdkEventAny {
     window: *C_GdkWindow,
     send_event: i8,
 }
+
+pub type gpointer = *c_void;
+pub type GCallback = Option<extern "C" fn()>;
+pub type GClosureNotify = Option<extern "C" fn(data: gpointer, closure: *C_GClosure)>;
+
+pub type GConnectFlags = c_int;
+pub static G_CONNECT_AFTER:   c_int = 1;
+pub static G_CONNECT_SWAPPED: c_int = 2;
 
 #[repr(C)]
 pub enum GdkEventType {
@@ -932,6 +942,11 @@ extern "C" {
     // pub fn gtk_menu_tool_button_get_menu       (button: *C_GtkMenuToolButton) -> *C_GtkWidget;
     pub fn gtk_menu_tool_button_set_arrow_tooltip_text(button: *C_GtkMenuToolButton, text: *c_char) -> ();
     pub fn gtk_menu_tool_button_set_arrow_tooltip_markup(button: *C_GtkMenuToolButton, markup: *c_char) -> ();
+
+    //=========================================================================
+    // GObject
+    //=========================================================================
+    pub fn g_signal_connect_data    (instance: gpointer, detailed_signal: *c_char, c_handler: GCallback, data: gpointer, destroy_data: GClosureNotify, connect_flags: GConnectFlags) -> c_ulong;
 
     //=========================================================================
     // Glu fixe code
