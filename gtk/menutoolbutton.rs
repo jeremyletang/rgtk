@@ -26,7 +26,6 @@ use ffi;
 pub struct MenuToolButton {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl MenuToolButton {
@@ -77,13 +76,8 @@ impl MenuToolButton {
 }
 
 impl_GtkWidget!(MenuToolButton)
-redirect_callback!(MenuToolButton)
-redirect_callback_widget!(MenuToolButton)
-struct_signal!(MenuToolButton)
-impl_signals!(MenuToolButton)
 
 impl GtkContainer for MenuToolButton {}
 impl GtkBin for MenuToolButton {}
 impl GtkToolItem for MenuToolButton {}
 impl GtkToolButton for MenuToolButton {}
-

@@ -38,7 +38,6 @@ use gtk;
 pub struct Paned {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl Paned {
@@ -95,10 +94,5 @@ impl Paned {
 }
 
 impl_GtkWidget!(Paned)
-redirect_callback!(Paned)
-redirect_callback_widget!(Paned)
-struct_signal!(Paned)
-impl_signals!(Paned)
 
 impl GtkContainer for Paned {}
-

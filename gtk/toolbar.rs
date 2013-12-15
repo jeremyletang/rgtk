@@ -36,7 +36,6 @@ use gtk::enums::{GtkIconSize, GtkReliefStyle, GtkToolbarStyle};
 pub struct Toolbar {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl Toolbar {
@@ -146,12 +145,7 @@ impl Toolbar {
 }
 
 impl_GtkWidget!(Toolbar)
-redirect_callback!(Toolbar)
-redirect_callback_widget!(Toolbar)
-struct_signal!(Toolbar)
-impl_signals!(Toolbar)
 
 impl GtkContainer for Toolbar {}
 impl GtkToolShell for Toolbar {}
 impl GtkOrientable for Toolbar {}
-

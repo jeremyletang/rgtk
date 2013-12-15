@@ -33,7 +33,6 @@ use gtk::enums::GtkIconSize;
 pub struct ScaleButton {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl ScaleButton {
@@ -47,10 +46,6 @@ impl ScaleButton {
 
 
 impl_GtkWidget!(ScaleButton)
-redirect_callback!(ScaleButton)
-redirect_callback_widget!(ScaleButton)
-struct_signal!(ScaleButton)
-impl_signals!(ScaleButton)
 
 impl GtkContainer for ScaleButton {}
 impl GtkButton for ScaleButton {}

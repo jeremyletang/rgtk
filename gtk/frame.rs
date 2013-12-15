@@ -25,7 +25,6 @@ use ffi;
 pub struct Frame {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl Frame {
@@ -39,10 +38,6 @@ impl Frame {
 }
 
 impl_GtkWidget!(Frame)
-redirect_callback!(Frame)
-redirect_callback_widget!(Frame)
-struct_signal!(Frame)
-impl_signals!(Frame)
 
 impl GtkFrame for Frame {}
 impl GtkContainer for Frame {}

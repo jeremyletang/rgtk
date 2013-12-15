@@ -26,7 +26,6 @@ use ffi;
 pub struct Spinner {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl Spinner {
@@ -50,7 +49,3 @@ impl Spinner {
 }
 
 impl_GtkWidget!(Spinner)
-redirect_callback!(Spinner)
-redirect_callback_widget!(Spinner)
-struct_signal!(Spinner)
-impl_signals!(Spinner)

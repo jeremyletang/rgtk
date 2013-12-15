@@ -27,7 +27,6 @@ use gtk::enums::GtkArrowType;
 pub struct MenuButton {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl MenuButton {
@@ -62,12 +61,7 @@ impl MenuButton {
 }
 
 impl_GtkWidget!(MenuButton)
-redirect_callback!(MenuButton)
-redirect_callback_widget!(MenuButton)
-struct_signal!(MenuButton)
-impl_signals!(MenuButton)
 
 impl GtkContainer for MenuButton {}
 impl GtkButton for MenuButton {}
 impl GtkToggleButton for MenuButton {}
-

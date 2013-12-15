@@ -36,7 +36,6 @@ use gtk::enums::GtkIconSize;
 pub struct Button {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl Button {
@@ -83,10 +82,6 @@ impl Button {
 }
 
 impl_GtkWidget!(Button)
-redirect_callback!(Button)
-redirect_callback_widget!(Button)
-struct_signal!(Button)
-impl_signals!(Button)
 
 impl GtkContainer for Button {}
 impl GtkButton for Button {}

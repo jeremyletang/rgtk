@@ -32,7 +32,6 @@ use ffi;
 pub struct LevelBar {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl LevelBar {
@@ -134,9 +133,5 @@ impl LevelBar {
 }
 
 impl_GtkWidget!(LevelBar)
-redirect_callback!(LevelBar)
-redirect_callback_widget!(LevelBar)
-struct_signal!(LevelBar)
-impl_signals!(LevelBar)
 
 impl GtkOrientable for LevelBar {}

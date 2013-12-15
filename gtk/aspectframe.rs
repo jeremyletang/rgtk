@@ -26,7 +26,6 @@ use ffi;
 pub struct AspectFrame {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl AspectFrame {
@@ -57,10 +56,6 @@ impl AspectFrame {
 }
 
 impl_GtkWidget!(AspectFrame)
-redirect_callback!(AspectFrame)
-redirect_callback_widget!(AspectFrame)
-struct_signal!(AspectFrame)
-impl_signals!(AspectFrame)
 
 impl GtkFrame for AspectFrame {}
 impl GtkContainer for AspectFrame {}

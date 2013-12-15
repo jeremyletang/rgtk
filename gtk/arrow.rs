@@ -27,7 +27,6 @@ use ffi;
 pub struct Arrow {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl Arrow {
@@ -44,9 +43,5 @@ impl Arrow {
 }
 
 impl_GtkWidget!(Arrow)
-redirect_callback!(Arrow)
-redirect_callback_widget!(Arrow)
-struct_signal!(Arrow)
-impl_signals!(Arrow)
 
 impl GtkMisc for Arrow {}

@@ -25,7 +25,6 @@ use ffi;
 pub struct ToolButton {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl ToolButton {
@@ -60,10 +59,6 @@ impl ToolButton {
 }
 
 impl_GtkWidget!(ToolButton)
-redirect_callback!(ToolButton)
-redirect_callback_widget!(ToolButton)
-struct_signal!(ToolButton)
-impl_signals!(ToolButton)
 
 impl GtkContainer for ToolButton {}
 impl GtkBin for ToolButton {}

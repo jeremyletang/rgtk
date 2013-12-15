@@ -25,7 +25,6 @@ use ffi;
 pub struct VolumeButton {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl VolumeButton {
@@ -36,10 +35,6 @@ impl VolumeButton {
 }
 
 impl_GtkWidget!(VolumeButton)
-redirect_callback!(VolumeButton)
-redirect_callback_widget!(VolumeButton)
-struct_signal!(VolumeButton)
-impl_signals!(VolumeButton)
 
 impl GtkContainer for VolumeButton {}
 impl GtkButton for VolumeButton {}

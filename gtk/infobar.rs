@@ -28,7 +28,6 @@ use ffi;
 pub struct InfoBar {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl InfoBar {
@@ -99,10 +98,6 @@ impl InfoBar {
 }
 
 impl_GtkWidget!(InfoBar)
-// redirect_callback!(InfoBar)
-// redirect_callback_widget!(InfoBar)
-struct_signal!(InfoBar)
-// impl_signals!(InfoBar)
 
 impl GtkContainer for InfoBar {}
 impl GtkBox for InfoBar {}

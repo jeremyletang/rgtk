@@ -31,7 +31,6 @@ use utils::cast::GTK_FONTBUTTON;
 pub struct FontButton {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl FontButton {
@@ -133,11 +132,6 @@ impl FontButton {
 
 
 impl_GtkWidget!(FontButton)
-redirect_callback!(FontButton)
-redirect_callback_widget!(FontButton)
-struct_signal!(FontButton)
-impl_signals!(FontButton)
 
 impl GtkContainer for FontButton {}
 impl GtkButton for FontButton {}
-

@@ -34,7 +34,6 @@ use gtk::enums::GtkWindowType;
 pub struct Window {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl Window {
@@ -45,10 +44,6 @@ impl Window {
 }
 
 impl_GtkWidget!(Window)
-redirect_callback!(Window)
-redirect_callback_widget!(Window)
-struct_signal!(Window)
-impl_signals!(Window)
 
 impl GtkContainer for Window {}
 impl GtkWindow for Window {}

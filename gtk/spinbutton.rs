@@ -38,7 +38,6 @@ use ffi;
 pub struct SpinButton {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl SpinButton {
@@ -203,10 +202,6 @@ impl SpinButton {
 // pub fn gtk_spin_button_get_value           (spin_button: *C_GtkSpinButton) -> c_double;
 
 impl_GtkWidget!(SpinButton)
-redirect_callback!(SpinButton)
-redirect_callback_widget!(SpinButton)
-struct_signal!(SpinButton)
-impl_signals!(SpinButton)
 
 impl GtkEntry for SpinButton {}
 impl GtkOrientable for SpinButton {}

@@ -26,7 +26,6 @@ use utils::cast::GTK_SEPARATORTOOLITEM;
 pub struct SeparatorToolItem {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl SeparatorToolItem {
@@ -51,10 +50,6 @@ impl SeparatorToolItem {
 }
 
 impl_GtkWidget!(SeparatorToolItem)
-redirect_callback!(SeparatorToolItem)
-redirect_callback_widget!(SeparatorToolItem)
-struct_signal!(SeparatorToolItem)
-impl_signals!(SeparatorToolItem)
 
 impl GtkContainer for SeparatorToolItem {}
 impl GtkBin for SeparatorToolItem {}

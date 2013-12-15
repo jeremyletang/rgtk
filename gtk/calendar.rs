@@ -38,7 +38,6 @@ use ffi;
 pub struct Calendar {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl Calendar {
@@ -133,11 +132,3 @@ impl Calendar {
 }
 
 impl_GtkWidget!(Calendar)
-redirect_callback!(Calendar)
-redirect_callback_widget!(Calendar)
-struct_signal!(Calendar)
-impl_signals!(Calendar)
-
-
-
-

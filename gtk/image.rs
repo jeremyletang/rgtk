@@ -25,7 +25,6 @@ use ffi;
 pub struct Image {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl Image {
@@ -40,9 +39,5 @@ impl Image {
 }
 
 impl_GtkWidget!(Image)
-redirect_callback!(Image)
-redirect_callback_widget!(Image)
-struct_signal!(Image)
-impl_signals!(Image)
 
 impl GtkMisc for Image {}

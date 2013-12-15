@@ -27,7 +27,6 @@ use ffi;
 pub struct ButtonBox {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl ButtonBox {
@@ -78,13 +77,7 @@ impl ButtonBox {
 }
 
 impl_GtkWidget!(ButtonBox)
-redirect_callback!(ButtonBox)
-redirect_callback_widget!(ButtonBox)
-struct_signal!(ButtonBox)
-impl_signals!(ButtonBox)
 
 impl GtkContainer for ButtonBox {}
 impl GtkBox for ButtonBox {}
 impl GtkOrientable for ButtonBox {}
-
-

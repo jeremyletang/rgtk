@@ -27,7 +27,6 @@ use utils::cast::GTK_PROGRESSBAR;
 pub struct ProgressBar {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl ProgressBar {
@@ -111,10 +110,5 @@ impl ProgressBar {
 }
 
 impl_GtkWidget!(ProgressBar)
-redirect_callback!(ProgressBar)
-redirect_callback_widget!(ProgressBar)
-struct_signal!(ProgressBar)
-impl_signals!(ProgressBar)
 
 impl GtkOrientable for ProgressBar {}
-

@@ -25,7 +25,6 @@ use ffi;
 pub struct CheckButton {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl CheckButton {
@@ -55,11 +54,6 @@ impl CheckButton {
 }
 
 impl_GtkWidget!(CheckButton)
-redirect_callback!(CheckButton)
-redirect_callback_widget!(CheckButton)
-struct_signal!(CheckButton)
-impl_signals!(CheckButton)
-
 
 impl GtkContainer for CheckButton {}
 impl GtkButton for CheckButton {}

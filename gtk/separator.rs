@@ -26,7 +26,6 @@ use gtk::enums::GtkOrientation;
 pub struct Separator {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl Separator {
@@ -37,9 +36,5 @@ impl Separator {
 }
 
 impl_GtkWidget!(Separator)
-redirect_callback!(Separator)
-redirect_callback_widget!(Separator)
-struct_signal!(Separator)
-impl_signals!(Separator)
 
 impl GtkOrientable for Separator {}

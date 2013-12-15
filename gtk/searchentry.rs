@@ -30,7 +30,6 @@ use ffi;
 pub struct SearchEntry {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl SearchEntry {
@@ -41,9 +40,5 @@ impl SearchEntry {
 }
 
 impl_GtkWidget!(SearchEntry)
-redirect_callback!(SearchEntry)
-redirect_callback_widget!(SearchEntry)
-struct_signal!(SearchEntry)
-impl_signals!(SearchEntry)
 
 impl GtkEntry for SearchEntry {}
