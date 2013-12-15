@@ -31,7 +31,6 @@ use ffi;
 pub struct LinkButton {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl LinkButton {
@@ -84,11 +83,6 @@ impl LinkButton {
 }
 
 impl_GtkWidget!(LinkButton)
-redirect_callback!(LinkButton)
-redirect_callback_widget!(LinkButton)
-struct_signal!(LinkButton)
-impl_signals!(LinkButton)
 
 impl GtkContainer for LinkButton {}
 impl GtkButton for LinkButton {}
-

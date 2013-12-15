@@ -35,7 +35,6 @@ use ffi;
 pub struct Scale {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl Scale {
@@ -130,9 +129,5 @@ impl Scale {
 }
 
 impl_GtkWidget!(Scale)
-redirect_callback!(Scale)
-redirect_callback_widget!(Scale)
-struct_signal!(Scale)
-impl_signals!(Scale)
 
 impl GtkOrientable for Scale {}

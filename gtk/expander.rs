@@ -27,7 +27,6 @@ use ffi;
 pub struct Expander {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl Expander {
@@ -162,11 +161,6 @@ impl Expander {
 }
 
 impl_GtkWidget!(Expander)
-redirect_callback!(Expander)
-redirect_callback_widget!(Expander)
-struct_signal!(Expander)
-impl_signals!(Expander)
 
 impl GtkContainer for Expander {}
 impl GtkBin for Expander {}
-

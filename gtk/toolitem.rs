@@ -25,7 +25,6 @@ use ffi;
 pub struct ToolItem {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl ToolItem {
@@ -36,10 +35,6 @@ impl ToolItem {
 }
 
 impl_GtkWidget!(ToolItem)
-redirect_callback!(ToolItem)
-redirect_callback_widget!(ToolItem)
-struct_signal!(ToolItem)
-impl_signals!(ToolItem)
 
 impl GtkContainer for ToolItem {}
 impl GtkBin for ToolItem {}

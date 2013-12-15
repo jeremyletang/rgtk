@@ -43,7 +43,6 @@ use ffi;
 pub struct Entry {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl Entry {
@@ -59,9 +58,5 @@ impl Entry {
 }
 
 impl_GtkWidget!(Entry)
-redirect_callback!(Entry)
-redirect_callback_widget!(Entry)
-struct_signal!(Entry)
-impl_signals!(Entry)
 
 impl GtkEntry for Entry {}

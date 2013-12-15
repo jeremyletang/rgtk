@@ -17,3 +17,4 @@ pub use gdk::color::Color;
 pub use gdk::color::RGBA;
 
 pub mod color;
+pub mod event;

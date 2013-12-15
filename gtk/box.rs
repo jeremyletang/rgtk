@@ -26,7 +26,6 @@ use ffi;
 pub struct Box {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl Box {
@@ -37,10 +36,6 @@ impl Box {
 }
 
 impl_GtkWidget!(Box)
-redirect_callback!(Box)
-redirect_callback_widget!(Box)
-struct_signal!(Box)
-impl_signals!(Box)
 
 impl GtkContainer for Box {}
 impl GtkBox for Box {}

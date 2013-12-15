@@ -27,7 +27,6 @@ use ffi;
 pub struct Grid {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl Grid {
@@ -165,15 +164,6 @@ impl Grid {
 
 
 impl_GtkWidget!(Grid)
-redirect_callback!(Grid)
-redirect_callback_widget!(Grid)
-struct_signal!(Grid)
-impl_signals!(Grid)
 
 impl GtkContainer for Grid {}
 impl GtkOrientable for Grid {}
-
-   
-    
-    
-   

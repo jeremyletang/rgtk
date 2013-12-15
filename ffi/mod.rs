@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with rgtk.  If not, see <http://www.gnu.org/licenses/>.
 
-use std::libc::{c_int, c_char, c_void, c_float, c_uint, c_double, c_long, c_short};
+use std::libc::{c_int, c_char, c_void, c_float, c_uint, c_double, c_long, c_ulong, c_short};
 
 use gtk::enums::*;
 use gdk;
@@ -74,6 +74,70 @@ pub struct C_GtkSeparatorToolItem;
 
 pub struct C_GtkMenu;
 pub struct C_GMenuModel;
+
+pub struct C_GClosure;
+
+pub struct C_GdkEvent;
+pub struct C_GdkWindow;
+
+pub struct C_GdkEventAny {
+    event_type: GdkEventType,
+    window: *C_GdkWindow,
+    send_event: i8,
+}
+
+pub type gpointer = *c_void;
+pub type GCallback = Option<extern "C" fn()>;
+pub type GClosureNotify = Option<extern "C" fn(data: gpointer, closure: *C_GClosure)>;
+
+pub type GConnectFlags = c_int;
+pub static G_CONNECT_AFTER:   c_int = 1;
+pub static G_CONNECT_SWAPPED: c_int = 2;
+
+#[repr(C)]
+pub enum GdkEventType {
+  GDK_NOTHING		= -1,
+  GDK_DELETE		= 0,
+  GDK_DESTROY		= 1,
+  GDK_EXPOSE		= 2,
+  GDK_MOTION_NOTIFY = 3,
+  GDK_BUTTON_PRESS = 4,
+  GDK_DOUBLE_BUTTON_PRESS = 5,
+  GDK_TRIPLE_BUTTON_PRESS = 6,
+  GDK_BUTTON_RELEASE = 7,
+  GDK_KEY_PRESS		= 8,
+  GDK_KEY_RELEASE = 9,
+  GDK_ENTER_NOTIFY = 10,
+  GDK_LEAVE_NOTIFY = 11,
+  GDK_FOCUS_CHANGE = 12,
+  GDK_CONFIGURE		= 13,
+  GDK_MAP		= 14,
+  GDK_UNMAP		= 15,
+  GDK_PROPERTY_NOTIFY = 16,
+  GDK_SELECTION_CLEAR = 17,
+  GDK_SELECTION_REQUEST = 18,
+  GDK_SELECTION_NOTIFY = 19,
+  GDK_PROXIMITY_IN = 20,
+  GDK_PROXIMITY_OUT = 21,
+  GDK_DRAG_ENTER        = 22,
+  GDK_DRAG_LEAVE        = 23,
+  GDK_DRAG_MOTION       = 24,
+  GDK_DRAG_STATUS       = 25,
+  GDK_DROP_START        = 26,
+  GDK_DROP_FINISHED     = 27,
+  GDK_CLIENT_EVENT = 28,
+  GDK_VISIBILITY_NOTIFY = 29,
+  GDK_SCROLL            = 31,
+  GDK_WINDOW_STATE      = 32,
+  GDK_SETTING           = 33,
+  GDK_OWNER_CHANGE      = 34,
+  GDK_GRAB_BROKEN       = 35,
+  GDK_DAMAGE            = 36,
+  GDK_TOUCH_BEGIN       = 37,
+  GDK_TOUCH_UPDATE      = 38,
+  GDK_TOUCH_END         = 39,
+  GDK_TOUCH_CANCEL      = 40,
+}
 
 extern "C" {
 
@@ -878,6 +942,11 @@ extern "C" {
     // pub fn gtk_menu_tool_button_get_menu       (button: *C_GtkMenuToolButton) -> *C_GtkWidget;
     pub fn gtk_menu_tool_button_set_arrow_tooltip_text(button: *C_GtkMenuToolButton, text: *c_char) -> ();
     pub fn gtk_menu_tool_button_set_arrow_tooltip_markup(button: *C_GtkMenuToolButton, markup: *c_char) -> ();
+
+    //=========================================================================
+    // GObject
+    //=========================================================================
+    pub fn g_signal_connect_data    (instance: gpointer, detailed_signal: *c_char, c_handler: GCallback, data: gpointer, destroy_data: GClosureNotify, connect_flags: GConnectFlags) -> c_ulong;
 
     //=========================================================================
     // Glu fixe code

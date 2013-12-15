@@ -28,7 +28,6 @@ use ffi;
 pub struct SearchBar {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl SearchBar {
@@ -73,10 +72,6 @@ impl SearchBar {
 }
 
 impl_GtkWidget!(SearchBar)
-redirect_callback!(SearchBar)
-redirect_callback_widget!(SearchBar)
-struct_signal!(SearchBar)
-impl_signals!(SearchBar)
 
 impl GtkContainer for SearchBar {}
 impl GtkBin for SearchBar {}

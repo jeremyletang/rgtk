@@ -31,7 +31,6 @@ use ffi;
 pub struct Switch {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl Switch {
@@ -56,7 +55,3 @@ impl Switch {
 }
 
 impl_GtkWidget!(Switch)
-redirect_callback!(Switch)
-redirect_callback_widget!(Switch)
-struct_signal!(Switch)
-impl_signals!(Switch)

@@ -34,7 +34,6 @@ use ffi;
 pub struct Label {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl Label {
@@ -58,10 +57,6 @@ impl Label {
 }
 
 impl_GtkWidget!(Label)
-redirect_callback!(Label)
-redirect_callback_widget!(Label)
-struct_signal!(Label)
-impl_signals!(Label)
 
 impl GtkMisc for Label {}
 impl GtkLabel for Label {}

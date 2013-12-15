@@ -32,7 +32,6 @@ use gdk;
 pub struct ColorButton {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl ColorButton {
@@ -120,11 +119,6 @@ impl ColorButton {
 }
 
 impl_GtkWidget!(ColorButton)
-redirect_callback!(ColorButton)
-redirect_callback_widget!(ColorButton)
-struct_signal!(ColorButton)
-impl_signals!(ColorButton)
 
 impl GtkContainer for ColorButton {}
 impl GtkButton for ColorButton {}
-

@@ -23,7 +23,6 @@ macro_rules! check_pointer(
             Some($gtk_struct {
                 pointer:            $tmp_pointer,
                 can_drop:           true,
-                signal_handlers:    ~[]
             })
         }
     );
@@ -40,103 +39,54 @@ macro_rules! impl_GtkWidget(
                 $gtk_struct {
                     pointer:         widget,
                     can_drop:        false,
-                    signal_handlers: ~[]
                 }
             }
         }
     );
 )
 
-macro_rules! redirect_callback(
-    ($gtk_struct:ident) => (
-        extern fn redirect_callback(widget: *ffi::C_GtkWidget, user_data: *c_void) -> () {
-            let mut button = $gtk_struct { pointer: widget, can_drop: false, signal_handlers: ~[]};
-            let sighandler = unsafe {(user_data as *SignalHandler).to_option().unwrap()};
-            let func = sighandler.function.unwrap();
-            func(&mut button, sighandler.user_data);
+macro_rules! extern_drop_handler(
+    ($extern_name:ident, $handler_type:ident) => (
+        extern "C" fn $extern_name(data: ffi::gpointer, _closure: *ffi::C_GClosure) {
+            unsafe {
+                let handler = cast::transmute::<ffi::gpointer, ~~$handler_type>(data);
+                drop(handler);
+            }
         }
-    );
+    )
 )
 
-macro_rules! redirect_callback_widget(
-    ($gtk_struct:ident) => (
-        extern fn redirect_callback_widget(widget: *ffi::C_GtkWidget, user_data: *c_void) -> () {
-            let mut button = $gtk_struct { pointer: widget, can_drop: false, signal_handlers: ~[]};
-            let sighandler = unsafe {(user_data as *SignalHandler).to_option().unwrap()};
-            let user_data = if !user_data.is_null() { 
-                Some(unsafe { cast::transmute_mut((sighandler.user_data  as *$gtk_struct).to_option().unwrap())  as &mut GtkWidget})
-            }  else {
-                None
-            };
-            let func = sighandler.function_widget.unwrap();
-            func(&mut button, user_data);
+macro_rules! extern_default_callback(
+    ($extern_name:ident, $handler_name:ident) => (
+        extern "C" fn $extern_name(object: *ffi::C_GtkWidget, user_data: ffi::gpointer) {
+            let mut handler = unsafe { cast::transmute::<ffi::gpointer, ~~$handler_name>(user_data) };
+
+            let window = GtkWidget::wrap_widget(object);
+            handler.callback(&window);
+
+            unsafe {
+                cast::forget(handler);
+            }
         }
-    );
+    )
 )
 
-macro_rules! struct_signal(
-    ($gtk_struct:ident) => (
-        #[doc(hidden)]
-        pub struct SignalHandler {
-            function: Option<fn(&mut $gtk_struct, *c_void)>,
-            function_widget: Option<fn(&mut $gtk_struct, Option<&mut GtkWidget>)>,
-            user_data: *c_void
+macro_rules! impl_connect_signal(
+    ($type_name:ident, $handler_drop_fn:ident, $handler_callback_fn:ident, $handler_name:ident, $method_name:ident, $signal_name:expr) => (
+        impl $type_name {
+            pub fn $method_name(&self, handler: ~$handler_name) {
+                let data = unsafe { cast::transmute::<~~$handler_name, ffi::gpointer>(~handler) };
+                $signal_name.with_c_str(|cstr| {
+                    unsafe {
+                        ffi::g_signal_connect_data(self.pointer as ffi::gpointer,
+                            cstr,
+                            Some(cast::transmute($handler_callback_fn)),
+                            data,
+                            Some($handler_drop_fn),
+                            0);
+                    }
+                });
+            }
         }
-    );
-)
-
-
-macro_rules! impl_signals(
-    ($gtk_struct:ident) => (
-        impl Signal for $gtk_struct {
-            fn connect(&mut self, signal: &str, function: fn()) -> () {
-                unsafe { 
-                    signal.with_c_str(|c_str| {
-                        ffi::signal_connect(self.pointer, c_str, Some(function))
-                    })
-                }
-            }
-
-            fn connect_2p<B>(&mut self, 
-                             signal: &str, 
-                             function: fn(&mut $gtk_struct, *c_void), 
-                             user_data: Option<&B>) -> () {
-                let tmp_sighandler = ~SignalHandler {
-                    function: Some(function),
-                    function_widget: None,
-                    user_data: ptr::to_unsafe_ptr(user_data.unwrap()) as *c_void
-                };
-                unsafe{ 
-                    signal.with_c_str(|c_str| {
-                        ffi::signal_connect_2params(self.pointer, 
-                                                    c_str, 
-                                                    Some(redirect_callback), 
-                                                    ptr::to_unsafe_ptr(tmp_sighandler) as *c_void) 
-                    });
-                }
-                self.signal_handlers.push(tmp_sighandler);
-            }
-
-            fn connect_2p_widget<B: GtkWidget>(&mut self, 
-                                               signal: &str, 
-                                               function: fn(&mut $gtk_struct, Option<&mut GtkWidget>), 
-                                               user_data: Option<&B>) -> () {
-                let tmp_sighandler = ~SignalHandler {
-                    function: None, 
-                    function_widget: Some(function),
-                    user_data: if user_data.is_some() {ptr::to_unsafe_ptr(user_data.unwrap()) as *c_void } else { ptr::null() }
-                };
-                unsafe{ 
-                    signal.with_c_str(|c_str| {
-                        ffi::signal_connect_2params(self.pointer, 
-                                                    c_str, 
-                                                    Some(redirect_callback_widget), 
-                                                    ptr::to_unsafe_ptr(tmp_sighandler) as *c_void) 
-                    });
-                }
-                self.signal_handlers.push(tmp_sighandler);
-            }
-
-        }
-    );
+    )
 )

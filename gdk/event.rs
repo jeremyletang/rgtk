@@ -13,39 +13,28 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with rgtk.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Show a spinner animation
+use std::ptr;
 
-use std::{ptr, cast};
-use std::libc::c_void;
-
-use traits::{GtkWidget, Signal};
-use utils::cast::GTK_SPINNER;
 use ffi;
 
-/// Spinner — Show a spinner animation
-pub struct Spinner {
-    priv pointer:           *ffi::C_GtkWidget,
-    priv can_drop:          bool,
+pub struct Event {
+    priv pointer: *ffi::C_GdkEvent,
 }
 
-impl Spinner {
-    pub fn new() -> Option<Spinner> {
-        let tmp_pointer = unsafe { ffi::gtk_spinner_new() };
-        check_pointer!(tmp_pointer, Spinner)
-    }
-
-    pub fn start(&mut self) -> () {
-        unsafe {
-            ffi::gtk_spinner_start(GTK_SPINNER(self.pointer))
+impl Event {
+    pub fn wrap(pointer: *ffi::C_GdkEvent) -> Event {
+        assert!(pointer != ptr::null());
+        Event {
+            pointer: pointer,
         }
     }
 
-    pub fn stop(&mut self) -> () {
+    pub fn get_event_type(&self) -> ffi::GdkEventType {
+        let any = self.pointer as *ffi::C_GdkEventAny;
         unsafe {
-            ffi::gtk_spinner_stop(GTK_SPINNER(self.pointer))
+            (*any).event_type
         }
     }
 
+    // TODO...
 }
-
-impl_GtkWidget!(Spinner)

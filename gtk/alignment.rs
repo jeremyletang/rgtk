@@ -27,7 +27,6 @@ use ffi;
 pub struct Alignment {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl Alignment {
@@ -72,12 +71,6 @@ impl Alignment {
 }
 
 impl_GtkWidget!(Alignment)
-redirect_callback!(Alignment)
-redirect_callback_widget!(Alignment)
-struct_signal!(Alignment)
-impl_signals!(Alignment)
 
 impl GtkContainer for Alignment {}
 impl GtkBin for Alignment {}
-
-

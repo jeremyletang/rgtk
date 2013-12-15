@@ -30,7 +30,6 @@ use ffi;
 pub struct ToggleButton {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl ToggleButton {
@@ -60,10 +59,6 @@ impl ToggleButton {
 }
 
 impl_GtkWidget!(ToggleButton)
-redirect_callback!(ToggleButton)
-redirect_callback_widget!(ToggleButton)
-struct_signal!(ToggleButton)
-impl_signals!(ToggleButton)
 
 impl GtkContainer for ToggleButton {}
 impl GtkButton for ToggleButton {}

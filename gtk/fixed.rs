@@ -26,7 +26,6 @@ use ffi;
 pub struct Fixed {
     priv pointer:           *ffi::C_GtkWidget,
     priv can_drop:          bool,
-    priv signal_handlers:   ~[~SignalHandler]
 }
 
 impl Fixed {
@@ -55,9 +54,5 @@ impl Fixed {
 }
 
 impl_GtkWidget!(Fixed)
-redirect_callback!(Fixed)
-redirect_callback_widget!(Fixed)
-struct_signal!(Fixed)
-impl_signals!(Fixed)
 
 impl GtkContainer for Fixed {}
