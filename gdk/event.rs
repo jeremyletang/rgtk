@@ -13,8 +13,28 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with rgtk.  If not, see <http://www.gnu.org/licenses/>.
 
-pub use gdk::color::Color;
-pub use gdk::color::RGBA;
+use std::ptr;
 
-pub mod color;
-pub mod event;
+use ffi;
+
+pub struct Event {
+    priv pointer: *ffi::C_GdkEvent,
+}
+
+impl Event {
+    pub fn wrap(pointer: *ffi::C_GdkEvent) -> Event {
+        assert!(pointer != ptr::null());
+        Event {
+            pointer: pointer,
+        }
+    }
+
+    pub fn get_event_type(&self) -> ffi::GdkEventType {
+        let any = self.pointer as *ffi::C_GdkEventAny;
+        unsafe {
+            (*any).event_type
+        }
+    }
+
+    // TODO...
+}
