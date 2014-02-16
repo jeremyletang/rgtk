@@ -4,12 +4,12 @@
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // rgtk is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU Lesser General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Lesser General Public License
 // along with rgtk.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -63,7 +63,7 @@ macro_rules! redirect_callback_widget(
         extern fn redirect_callback_widget(widget: *ffi::C_GtkWidget, user_data: *c_void) -> () {
             let mut button = $gtk_struct { pointer: widget, can_drop: false, signal_handlers: ~[]};
             let sighandler = unsafe {(user_data as *SignalHandler).to_option().unwrap()};
-            let user_data = if !user_data.is_null() { 
+            let user_data = if !user_data.is_null() {
                 Some(unsafe { cast::transmute_mut((sighandler.user_data  as *$gtk_struct).to_option().unwrap())  as &mut GtkWidget})
             }  else {
                 None
@@ -90,48 +90,48 @@ macro_rules! impl_signals(
     ($gtk_struct:ident) => (
         impl Signal for $gtk_struct {
             fn connect(&mut self, signal: &str, function: fn()) -> () {
-                unsafe { 
+                unsafe {
                     signal.with_c_str(|c_str| {
                         ffi::signal_connect(self.pointer, c_str, Some(function))
                     })
                 }
             }
 
-            fn connect_2p<B>(&mut self, 
-                             signal: &str, 
-                             function: fn(&mut $gtk_struct, *c_void), 
+            fn connect_2p<B>(&mut self,
+                             signal: &str,
+                             function: fn(&mut $gtk_struct, *c_void),
                              user_data: Option<&B>) -> () {
                 let tmp_sighandler = ~SignalHandler {
                     function: Some(function),
                     function_widget: None,
-                    user_data: ptr::to_unsafe_ptr(user_data.unwrap()) as *c_void
+                    user_data: user_data.unwrap() as *B as *c_void
                 };
-                unsafe{ 
+                unsafe{
                     signal.with_c_str(|c_str| {
-                        ffi::signal_connect_2params(self.pointer, 
-                                                    c_str, 
-                                                    Some(redirect_callback), 
-                                                    ptr::to_unsafe_ptr(tmp_sighandler) as *c_void) 
+                        ffi::signal_connect_2params(self.pointer,
+                                                    c_str,
+                                                    Some(redirect_callback),
+                                                    &*tmp_sighandler as *SignalHandler as *c_void)
                     });
                 }
                 self.signal_handlers.push(tmp_sighandler);
             }
 
-            fn connect_2p_widget<B: GtkWidget>(&mut self, 
-                                               signal: &str, 
-                                               function: fn(&mut $gtk_struct, Option<&mut GtkWidget>), 
+            fn connect_2p_widget<B: GtkWidget>(&mut self,
+                                               signal: &str,
+                                               function: fn(&mut $gtk_struct, Option<&mut GtkWidget>),
                                                user_data: Option<&B>) -> () {
                 let tmp_sighandler = ~SignalHandler {
-                    function: None, 
+                    function: None,
                     function_widget: Some(function),
-                    user_data: if user_data.is_some() {ptr::to_unsafe_ptr(user_data.unwrap()) as *c_void } else { ptr::null() }
+                    user_data: if user_data.is_some() {user_data.unwrap() as *B as *c_void } else { ptr::null() }
                 };
-                unsafe{ 
+                unsafe{
                     signal.with_c_str(|c_str| {
-                        ffi::signal_connect_2params(self.pointer, 
-                                                    c_str, 
-                                                    Some(redirect_callback_widget), 
-                                                    ptr::to_unsafe_ptr(tmp_sighandler) as *c_void) 
+                        ffi::signal_connect_2params(self.pointer,
+                                                    c_str,
+                                                    Some(redirect_callback_widget),
+                                                    &*tmp_sighandler as *SignalHandler as *c_void)
                     });
                 }
                 self.signal_handlers.push(tmp_sighandler);
