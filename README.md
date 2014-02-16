@@ -9,11 +9,11 @@ Installation
 
 __rgtk__ use autoconf tools to build, so you should install them on your system.
 
-You should install __GTK+__ developpement library before install __rgtk__.
+You should install __GTK+__ developpement library before installing __rgtk__.
 
 __rgtk__ use the version 3.10 of __GTK+__, so it should be up to date or the library cannot build.
 
-Then you can build __rgtk__ in two steps: 
+Then you can build __rgtk__ in two steps:
 
 * First build a little c-glue library to deal with some gtk macros by typing :
 
@@ -24,7 +24,7 @@ Then you can build __rgtk__ in two steps:
 * next you can build __rgtk__ with the following command :
 
 ```Shell
-> make 
+> make
 ```
 
 * you can build an awful test main which display some widget :
@@ -83,4 +83,4 @@ Finally all the gtk widget implements the traits GtkWidget.
 License
 =======
 
-__rgtk__ is available under the same license term than GTK+, the LGPL (Lesser General Public license). 
+__rgtk__ is available under the same license term than GTK+, the LGPL (Lesser General Public license).

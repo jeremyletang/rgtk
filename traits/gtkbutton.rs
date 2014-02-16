@@ -4,16 +4,16 @@
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // rgtk is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU Lesser General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Lesser General Public License
 // along with rgtk.  If not, see <http://www.gnu.org/licenses/>.
 
-use std::{str, ptr};
+use std::str;
 use std::libc::c_float;
 
 use traits::{GtkWidget, GtkContainer};
@@ -66,7 +66,7 @@ pub trait GtkButton: GtkWidget + GtkContainer {
 
     fn get_label(&self) -> Option<~str> {
         let c_str = unsafe { ffi::gtk_button_get_label(GTK_BUTTON(self.get_widget())) };
-        if ptr::is_null(c_str) {
+        if c_str.is_null() {
             None
         } else {
             Some(unsafe { str::raw::from_c_str(c_str) })
@@ -114,7 +114,7 @@ pub trait GtkButton: GtkWidget + GtkContainer {
             true    => unsafe { ffi::gtk_button_set_focus_on_click(GTK_BUTTON(self.get_widget()), ffi::Gtrue) },
             false   => unsafe { ffi::gtk_button_set_focus_on_click(GTK_BUTTON(self.get_widget()), ffi::Gfalse) }
         }
-    } 
+    }
 
     fn get_focus_on_click(&self) -> bool {
         match unsafe { ffi::gtk_button_get_focus_on_click(GTK_BUTTON(self.get_widget())) } {

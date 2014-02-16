@@ -3,7 +3,7 @@
 
 #[feature(globs)];
 
-extern mod rgtk;
+extern crate rgtk;
 
 use rgtk::*;
 
@@ -33,7 +33,7 @@ mod platform {
 
 
 fn my_callback(widget: &mut gtk::Button, callback_data: Option<&mut GtkWidget>) {
-    if callback_data.is_some() { 
+    if callback_data.is_some() {
         let mut i = gtk::cast::to_entry(callback_data.unwrap());
         i.set_text(widget.get_label().unwrap());
     }
@@ -52,7 +52,7 @@ fn main() {
     println!("Major: {}, Minor: {}", gtk::version::get_major_version(), gtk::version::get_minor_version());
     let mut window = gtk::Window::new(GtkWindowTopLevel).unwrap();
     let mut frame = gtk::Frame::new(Some("Yep a frame")).unwrap();
-    let mut box = gtk::Box::new(GtkOrientationHorizontal, 10).unwrap();
+    let mut box_ = gtk::Box::new(GtkOrientationHorizontal, 10).unwrap();
     let mut v_box = gtk::Box::new(GtkOrientationHorizontal, 10).unwrap();
     let mut button_box = gtk::ButtonBox::new(GtkOrientationHorizontal).unwrap();
     let mut label = gtk::Label::new("Yeah a wonderful label too !").unwrap();
@@ -64,7 +64,7 @@ fn main() {
     let menu_button = gtk::MenuButton::new().unwrap();
     let link_button = gtk::LinkButton::new("www.rust-lang.org").unwrap();
     let mut volume_button = gtk::VolumeButton::new().unwrap();
-    let mut entry = gtk::Entry::new().unwrap();    
+    let mut entry = gtk::Entry::new().unwrap();
     let search_entry = gtk::SearchEntry::new().unwrap();
     let separator = gtk::Separator::new(GtkOrientationHorizontal).unwrap();
     let separator2 = gtk::Separator::new(GtkOrientationHorizontal).unwrap();
@@ -86,7 +86,7 @@ fn main() {
     level_bar.set_value(37.);
     switch2.set_active(true);
     frame.set_border_width(10);
-    box.set_border_width(5);
+    box_.set_border_width(5);
     entry.set_placeholder("An Entry with a placeholder !");
     volume_button.set_orientation(GtkOrientationHorizontal);
     label.set_justify(GtkJustifyLeft);
@@ -95,7 +95,7 @@ fn main() {
     button.connect_2p_widget("clicked", my_callback, Some(&entry));
     window.connect("delete-event", rt::_main_quit);
     // window.connect_2p_widget("delete-event", quit_callback, Some(&entry));
-    frame.add(&box);
+    frame.add(&box_);
     button_box.add(&button);
     button_box.add(&font_button);
     button_box.add(&toggle_button);
@@ -107,22 +107,22 @@ fn main() {
     v_box.add(&check_button);
     v_box.add(&link_button);
     v_box.add(&spin_button);
-    box.add(&info_bar);
-    box.add(&v_box);
-    box.add(&scale);
-    box.add(&level_bar);
-    box.add(&button_box);
-    box.add(&progress_bar);
-    box.add(&separator);
-    box.add(&label);
-    box.add(&entry);
-    box.add(&separator2);
-    box.add(&search_entry);
-    box.add(&spinner);
-    box.add(&image);
-    box.add(&arrow);
-    box.add(&calendar);
-    box.set_orientation(GtkOrientationVertical);
+    box_.add(&info_bar);
+    box_.add(&v_box);
+    box_.add(&scale);
+    box_.add(&level_bar);
+    box_.add(&button_box);
+    box_.add(&progress_bar);
+    box_.add(&separator);
+    box_.add(&label);
+    box_.add(&entry);
+    box_.add(&separator2);
+    box_.add(&search_entry);
+    box_.add(&spinner);
+    box_.add(&image);
+    box_.add(&arrow);
+    box_.add(&calendar);
+    box_.set_orientation(GtkOrientationVertical);
     window.show_all();
     rt::_main();
 }
