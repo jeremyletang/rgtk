@@ -887,6 +887,11 @@ extern "C" {
     pub fn gtk_menu_tool_button_set_arrow_tooltip_markup(button: *C_GtkMenuToolButton, markup: *c_char) -> ();
 
     //=========================================================================
+    // GtkDrawingArea
+    //=========================================================================
+    pub fn gtk_drawing_area_new                 () -> *C_GtkWidget;
+
+    //=========================================================================
     // Glue fixe code
     //=========================================================================
     pub fn glue_signal_connect(g_object: *C_GtkWidget,

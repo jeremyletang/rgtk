@@ -70,7 +70,8 @@ pub use self::widgets::{
 	SeparatorToolItem,
 	ToolButton,
 	ToggleToolButton,
-	MenuToolButton
+	MenuToolButton,
+	DrawingArea
 };
 
 pub use self::enums::{

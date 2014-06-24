@@ -55,6 +55,7 @@ pub use self::separatortoolitem::SeparatorToolItem;
 pub use self::toolbutton::ToolButton;
 pub use self::toggletoolbutton::ToggleToolButton;
 pub use self::menutoolbutton::MenuToolButton;
+pub use self::drawingarea::DrawingArea;
 
 pub mod window;
 pub mod label;
@@ -98,3 +99,4 @@ pub mod separatortoolitem;
 pub mod toolbutton;
 pub mod toggletoolbutton;
 pub mod menutoolbutton;
+pub mod drawingarea;
