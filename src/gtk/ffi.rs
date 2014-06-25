@@ -101,6 +101,7 @@ extern "C" {
     pub fn gtk_window_set_title                (window: *C_GtkWindow, title: *c_char) -> ();
     pub fn gtk_window_get_title                (window: *C_GtkWindow) -> *c_char;
     pub fn gtk_widget_hide                     (widget: *C_GtkWidget) -> ();
+    pub fn gtk_window_set_default_size         (widget: *C_GtkWidget, width: c_int, height: c_int);
     // pub fn gtk_window_set_role(window: *C_GtkWindow, role: *c_char) -> ();
     // pub fn gtk_window_set_startup_id(window: *C_GtkWindow, startup_id: *c_char) -> ();
     // pub fn gtk_window_get_role(window: *C_GtkWindow) -> *c_char;
@@ -129,6 +130,8 @@ extern "C" {
     pub fn gtk_widget_get_margin_left          (widget: *C_GtkWidget) -> c_int;
     pub fn gtk_widget_get_margin_top           (widget: *C_GtkWidget) -> c_int;
     pub fn gtk_widget_get_margin_bottom        (widget: *C_GtkWidget) -> c_int;
+    pub fn gtk_widget_get_allocated_width      (widget: *C_GtkWidget) -> c_int;
+    pub fn gtk_widget_get_allocated_height     (widget: *C_GtkWidget) -> c_int;
 
     //=========================================================================
     // GtkLabel
