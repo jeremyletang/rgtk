@@ -27,12 +27,12 @@ use gtk::traits;
 struct_Widget!(ToggleButton)
 
 impl ToggleButton {
-    pub fn new() -> Option<ToggleButton> {
+    pub fn new() -> ToggleButton {
         let tmp_pointer = unsafe { ffi::gtk_toggle_button_new() };
         check_pointer!(tmp_pointer, ToggleButton)
     }
 
-    pub fn new_with_label(label: &str) -> Option<ToggleButton> {
+    pub fn new_with_label(label: &str) -> ToggleButton {
         let tmp_pointer = unsafe {
             label.with_c_str(|c_str| {
                 ffi::gtk_toggle_button_new_with_label(c_str)
@@ -41,7 +41,7 @@ impl ToggleButton {
         check_pointer!(tmp_pointer, ToggleButton)
     }
 
-    pub fn new_with_mnemonic(mnemonic: &str) -> Option<ToggleButton> {
+    pub fn new_with_mnemonic(mnemonic: &str) -> ToggleButton {
         let tmp_pointer = unsafe {
             mnemonic.with_c_str(|c_str| {
                 ffi::gtk_toggle_button_new_with_mnemonic(c_str)

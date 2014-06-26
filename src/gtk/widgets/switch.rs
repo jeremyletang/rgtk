@@ -26,7 +26,7 @@ use gtk::ffi;
 struct_Widget!(Switch)
 
 impl Switch {
-    pub fn new() -> Option<Switch> {
+    pub fn new() -> Switch {
         let tmp_pointer = unsafe { ffi::gtk_switch_new() };
         check_pointer!(tmp_pointer, Switch)
     }

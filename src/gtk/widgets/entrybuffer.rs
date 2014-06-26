@@ -38,20 +38,13 @@ pub struct EntryBuffer {
 }
 
 impl EntryBuffer {
-    pub fn new(initial_chars: &str) -> Option<EntryBuffer> {
+    pub fn new(initial_chars: &str) -> EntryBuffer {
         let tmp_pointer = unsafe {
             initial_chars.with_c_str(|c_str| {
                 ffi::gtk_entry_buffer_new(c_str, initial_chars.len() as c_int)
             })
         };
-        if tmp_pointer.is_null() {
-            None
-        } else {
-            Some(EntryBuffer {
-                pointer: tmp_pointer,
-                can_drop: true
-            })
-        }
+        check_pointer!(tmp_pointer, EntryBuffer)
     }
 
     pub fn get_text(&self) -> String {

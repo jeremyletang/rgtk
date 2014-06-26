@@ -31,12 +31,12 @@ struct_Widget!(FontButton)
 
 
 impl FontButton {
-    pub fn new() -> Option<FontButton> {
+    pub fn new() -> FontButton {
         let tmp_pointer = unsafe { ffi::gtk_font_button_new() };
         check_pointer!(tmp_pointer, FontButton)
     }
 
-    pub fn new_with_font(font_name: &str) -> Option<FontButton> {
+    pub fn new_with_font(font_name: &str) -> FontButton {
         let tmp_pointer = unsafe {
             font_name.with_c_str(|c_str| {
                 ffi::gtk_font_button_new_with_font(c_str)

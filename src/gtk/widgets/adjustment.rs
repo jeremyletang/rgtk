@@ -38,18 +38,11 @@ impl Adjustment {
                upper: f64,
                step_increment: f64,
                page_increment: f64,
-               page_size: f64) -> Option<Adjustment> {
+               page_size: f64) -> Adjustment {
         let tmp_pointer = unsafe { ffi::gtk_adjustment_new(value as c_double, lower as c_double,
                                                            upper as c_double, step_increment as c_double,
                                                            page_increment as c_double, page_size as c_double) };
-        if tmp_pointer.is_null() {
-            None
-        } else {
-            Some(Adjustment {
-                pointer:    tmp_pointer,
-                can_drop:   true
-            })
-        }
+        check_pointer!(tmp_pointer, Adjustment)
     }
 
     pub fn get_value(&self) -> f64 {

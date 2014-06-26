@@ -27,7 +27,7 @@ use gtk::traits;
 struct_Widget!(SearchEntry)
 
 impl SearchEntry {
-    pub fn new() -> Option<SearchEntry> {
+    pub fn new() -> SearchEntry {
         let tmp_pointer = unsafe { ffi::gtk_search_entry_new() };
         check_pointer!(tmp_pointer, SearchEntry)
     }

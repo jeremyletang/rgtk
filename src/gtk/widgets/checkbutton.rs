@@ -23,12 +23,12 @@ struct_Widget!(CheckButton)
 
 
 impl CheckButton {
-    pub fn new() -> Option<CheckButton> {
+    pub fn new() -> CheckButton {
         let tmp_pointer = unsafe { ffi::gtk_check_button_new() };
         check_pointer!(tmp_pointer, CheckButton)
     }
 
-    pub fn new_with_label(label: &str) -> Option<CheckButton> {
+    pub fn new_with_label(label: &str) -> CheckButton {
         let tmp_pointer = unsafe {
             label.with_c_str(|c_str| {
                 ffi::gtk_check_button_new_with_label(c_str)
@@ -37,7 +37,7 @@ impl CheckButton {
         check_pointer!(tmp_pointer, CheckButton)
     }
 
-    pub fn new_with_mnemonic(mnemonic: &str) -> Option<CheckButton> {
+    pub fn new_with_mnemonic(mnemonic: &str) -> CheckButton {
         let tmp_pointer = unsafe {
             mnemonic.with_c_str(|c_str| {
                 ffi::gtk_check_button_new_with_mnemonic(c_str)

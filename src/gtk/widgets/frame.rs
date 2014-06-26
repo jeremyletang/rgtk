@@ -25,7 +25,7 @@ use gtk::traits;
 struct_Widget!(Frame)
 
 impl Frame {
-    pub fn new(label: Option<&str>) -> Option<Frame> {
+    pub fn new(label: Option<&str>) -> Frame {
         let tmp_pointer = match label {
             Some(l) => unsafe { l.with_c_str(|c_str| { ffi::gtk_frame_new(c_str) }) },
             None    => unsafe { ffi::gtk_frame_new(ptr::null()) }

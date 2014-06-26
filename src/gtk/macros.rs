@@ -18,12 +18,12 @@
 macro_rules! check_pointer(
     ($tmp_pointer:ident, $gtk_struct:ident) => (
         if $tmp_pointer.is_null() {
-            None
+            fail!("Fatal error: Gtk didn't return a valid pointer")
         } else {
-            Some($gtk_struct {
+            $gtk_struct {
                 pointer:            $tmp_pointer,
                 can_drop:           true
-            })
+            }
         }
     );
 )

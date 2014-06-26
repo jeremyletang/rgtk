@@ -26,7 +26,7 @@ use gtk::traits;
 struct_Widget!(Grid)
 
 impl Grid {
-    pub fn new() -> Option<Grid> {
+    pub fn new() -> Grid {
         let tmp_pointer = unsafe { ffi::gtk_grid_new() };
         check_pointer!(tmp_pointer, Grid)
     }

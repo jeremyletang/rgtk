@@ -24,7 +24,7 @@ use gtk::traits;
 struct_Widget!(_Box)
 
 impl _Box {
-    pub fn new(orientation: Orientation, spacing: i32) -> Option<_Box> {
+    pub fn new(orientation: Orientation, spacing: i32) -> _Box {
         let tmp_pointer = unsafe { ffi::gtk_box_new(orientation, spacing as c_int) };
         check_pointer!(tmp_pointer, _Box)
     }

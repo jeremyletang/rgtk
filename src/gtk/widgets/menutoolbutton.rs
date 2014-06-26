@@ -26,7 +26,7 @@ struct_Widget!(MenuToolButton)
 
 
 impl MenuToolButton {
-    pub fn new<T: traits::Widget>(icon_widget: Option<&T>, label: Option<&str>) -> Option<MenuToolButton> {
+    pub fn new<T: traits::Widget>(icon_widget: Option<&T>, label: Option<&str>) -> MenuToolButton {
         let tmp_pointer: *ffi::C_GtkWidget = unsafe {
             match label {
                 Some(l) => {
@@ -48,7 +48,7 @@ impl MenuToolButton {
         check_pointer!(tmp_pointer, MenuToolButton)
     }
 
-    pub fn new_from_stock(stock_id: &str) -> Option<MenuToolButton> {
+    pub fn new_from_stock(stock_id: &str) -> MenuToolButton {
         let tmp_pointer = stock_id.with_c_str(|c_str| {
             unsafe { ffi::gtk_menu_tool_button_new_from_stock(c_str) }
         });

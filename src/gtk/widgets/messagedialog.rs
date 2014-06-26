@@ -22,29 +22,21 @@ use gtk;
 struct_Widget!(MessageDialog)
 
 impl MessageDialog {
-    pub fn new(parent: Option<gtk::Window>, flags: gtk::DialogFlags, _type: gtk::MessageType, buttons: gtk::ButtonsType) -> Option<MessageDialog> {
+    pub fn new(parent: Option<gtk::Window>, flags: gtk::DialogFlags, _type: gtk::MessageType, buttons: gtk::ButtonsType) -> MessageDialog {
         let tmp_pointer = unsafe { ffi::gtk_message_dialog_new(match parent {
                 Some(ref p) => GTK_WINDOW(p.get_widget()),
                 None => ::std::ptr::null()
             }, flags, _type, buttons, ::std::ptr::null())
         };
 
-        if tmp_pointer.is_null() {
-            None
-        } else {
-            Some(traits::Widget::wrap(tmp_pointer))
-        }
+        check_pointer!(tmp_pointer, MessageDialog)
     }
 
-    pub fn new_with_markup(parent: Option<gtk::Window>, flags: gtk::DialogFlags, _type: gtk::MessageType, buttons: gtk::ButtonsType, markup: &str) -> Option<MessageDialog> {
+    pub fn new_with_markup(parent: Option<gtk::Window>, flags: gtk::DialogFlags, _type: gtk::MessageType, buttons: gtk::ButtonsType, markup: &str) -> MessageDialog {
         //gtk_message_dialog_new_with_markup
-        match MessageDialog::new(parent, flags, _type, buttons) {
-            Some(m) => {
-                m.set_markup(markup);
-                Some(m)
-            }
-            None => None
-        }
+        let m = MessageDialog::new(parent, flags, _type, buttons);
+        m.set_markup(markup);
+        m
     }
 
     pub fn set_markup(&self, markup: &str) -> () {

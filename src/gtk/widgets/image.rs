@@ -23,7 +23,7 @@ struct_Widget!(Image)
 
 
 impl Image {
-    pub fn new_from_file(filename: &str) -> Option<Image> {
+    pub fn new_from_file(filename: &str) -> Image {
         let tmp_pointer = unsafe {
             filename.with_c_str(|c_str| {
                 ffi::gtk_image_new_from_file(c_str)

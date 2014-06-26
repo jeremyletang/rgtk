@@ -22,7 +22,7 @@ use gtk::traits;
 struct_Widget!(ToolItem)
 
 impl ToolItem {
-    pub fn new() -> Option<ToolItem> {
+    pub fn new() -> ToolItem {
         let tmp_pointer = unsafe { ffi::gtk_tool_item_new() };
         check_pointer!(tmp_pointer, ToolItem)
     }

@@ -22,7 +22,7 @@ use gtk::ffi;
 struct_Widget!(Spinner)
 
 impl Spinner {
-    pub fn new() -> Option<Spinner> {
+    pub fn new() -> Spinner {
         let tmp_pointer = unsafe { ffi::gtk_spinner_new() };
         check_pointer!(tmp_pointer, Spinner)
     }

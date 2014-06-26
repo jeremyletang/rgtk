@@ -35,7 +35,7 @@ use gtk::{IconSize, ReliefStyle, ToolbarStyle};
 struct_Widget!(Toolbar)
 
 impl Toolbar {
-    pub fn new() -> Option<Toolbar> {
+    pub fn new() -> Toolbar {
         let tmp_pointer = unsafe { ffi::gtk_toolbar_new() };
         check_pointer!(tmp_pointer, Toolbar)
     }

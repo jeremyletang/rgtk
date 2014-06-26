@@ -23,14 +23,10 @@ use gtk::enums;
 struct_Widget!(AboutDialog)
 
 impl AboutDialog {
-    pub fn new() -> Option<AboutDialog> {
+    pub fn new() -> AboutDialog {
         let tmp_pointer = unsafe { ffi::gtk_about_dialog_new() };
 
-        if tmp_pointer.is_null() {
-            None
-        } else {
-            Some(traits::Widget::wrap(tmp_pointer))
-        }
+        check_pointer!(tmp_pointer, AboutDialog)
     }
 
     pub fn get_program_name(&self) -> Option<String> {

@@ -10,35 +10,35 @@ use rgtk::gtk::signals;
 fn main() {
     gtk::init();
     println!("Major: {}, Minor: {}", gtk::get_major_version(), gtk::get_minor_version());
-    let mut window = gtk::Window::new(gtk::window_type::TopLevel).unwrap();
-    let mut frame = gtk::Frame::new(Some("Yep a frame")).unwrap();
-    let mut _box = gtk::_Box::new(gtk::orientation::Horizontal, 10).unwrap();
-    let mut v_box = gtk::_Box::new(gtk::orientation::Horizontal, 10).unwrap();
-    let mut button_box = gtk::ButtonBox::new(gtk::orientation::Horizontal).unwrap();
-    let mut label = gtk::Label::new("Yeah a wonderful label too !").unwrap();
-    let mut button = gtk::Button::new_with_label("Whattttt a button !").unwrap();
-    let font_button = gtk::FontButton::new().unwrap();
-    let toggle_button = gtk::ToggleButton::new_with_label("Toggle Me !").unwrap();
-    let check_button = gtk::CheckButton::new_with_label("Labeled check button").unwrap();
-    let color_button = gtk::ColorButton::new().unwrap();
-    let menu_button = gtk::MenuButton::new().unwrap();
-    let link_button = gtk::LinkButton::new("www.rust-lang.org").unwrap();
-    let mut volume_button = gtk::VolumeButton::new().unwrap();
-    let mut entry = gtk::Entry::new().unwrap();
-    let search_entry = gtk::SearchEntry::new().unwrap();
-    let separator = gtk::Separator::new(gtk::orientation::Horizontal).unwrap();
-    let separator2 = gtk::Separator::new(gtk::orientation::Horizontal).unwrap();
-    let switch = gtk::Switch::new().unwrap();
-    let mut switch2 = gtk::Switch::new().unwrap();
-    let scale = gtk::Scale::new_with_range(gtk::orientation::Horizontal, 0., 100., 1.).unwrap();
-    let mut level_bar = gtk::LevelBar::new_for_interval(0., 100.).unwrap();
-    let spin_button = gtk::SpinButton::new_with_range(0., 100., 1.).unwrap();
-    let mut spinner = gtk::Spinner::new().unwrap();
-    let image = gtk::Image::new_from_file("./test/resources/gtk.jpg").unwrap();
-    let mut progress_bar = gtk::ProgressBar::new().unwrap();
-    let arrow = gtk::Arrow::new(gtk::arrow_type::Right, gtk::shadow_type::EtchedOut).unwrap();
-    let calendar = gtk::Calendar::new().unwrap();
-    let mut info_bar = gtk::InfoBar::new().unwrap();
+    let mut window = gtk::Window::new(gtk::window_type::TopLevel);
+    let mut frame = gtk::Frame::new(Some("Yep a frame"));
+    let mut _box = gtk::_Box::new(gtk::orientation::Horizontal, 10);
+    let mut v_box = gtk::_Box::new(gtk::orientation::Horizontal, 10);
+    let mut button_box = gtk::ButtonBox::new(gtk::orientation::Horizontal);
+    let mut label = gtk::Label::new("Yeah a wonderful label too !");
+    let mut button = gtk::Button::new_with_label("Whattttt a button !");
+    let font_button = gtk::FontButton::new();
+    let toggle_button = gtk::ToggleButton::new_with_label("Toggle Me !");
+    let check_button = gtk::CheckButton::new_with_label("Labeled check button");
+    let color_button = gtk::ColorButton::new();
+    let menu_button = gtk::MenuButton::new();
+    let link_button = gtk::LinkButton::new("www.rust-lang.org");
+    let mut volume_button = gtk::VolumeButton::new();
+    let mut entry = gtk::Entry::new();
+    let search_entry = gtk::SearchEntry::new();
+    let separator = gtk::Separator::new(gtk::orientation::Horizontal);
+    let separator2 = gtk::Separator::new(gtk::orientation::Horizontal);
+    let switch = gtk::Switch::new();
+    let mut switch2 = gtk::Switch::new();
+    let scale = gtk::Scale::new_with_range(gtk::orientation::Horizontal, 0., 100., 1.);
+    let mut level_bar = gtk::LevelBar::new_for_interval(0., 100.);
+    let spin_button = gtk::SpinButton::new_with_range(0., 100., 1.);
+    let mut spinner = gtk::Spinner::new();
+    let image = gtk::Image::new_from_file("./test/resources/gtk.jpg");
+    let mut progress_bar = gtk::ProgressBar::new();
+    let arrow = gtk::Arrow::new(gtk::arrow_type::Right, gtk::shadow_type::EtchedOut);
+    let calendar = gtk::Calendar::new();
+    let mut info_bar = gtk::InfoBar::new();
 
     println!("test");
 
@@ -63,7 +63,7 @@ fn main() {
     button.connect(signals::Clicked::new(||{
         //entry.set_text("Clicked!".to_string());
         let dialog = gtk::MessageDialog::new_with_markup(None, gtk::dialog_flags::Modal, gtk::message_type::Info,
-            gtk::buttons_type::OkCancel, "This is a trap !").unwrap();
+            gtk::buttons_type::OkCancel, "This is a trap !");
 
         dialog.run();
     }));

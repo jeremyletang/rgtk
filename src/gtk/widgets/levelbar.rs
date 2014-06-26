@@ -31,12 +31,12 @@ use gtk::traits;
 struct_Widget!(LevelBar)
 
 impl LevelBar {
-    pub fn new() -> Option<LevelBar> {
+    pub fn new() -> LevelBar {
         let tmp_pointer = unsafe { ffi::gtk_level_bar_new() };
         check_pointer!(tmp_pointer, LevelBar)
     }
 
-    pub fn new_for_interval(min: f64, max: f64) -> Option<LevelBar> {
+    pub fn new_for_interval(min: f64, max: f64) -> LevelBar {
         let tmp_pointer = unsafe { ffi::gtk_level_bar_new_for_interval(min as c_double, max as c_double) };
         check_pointer!(tmp_pointer, LevelBar)
     }
