@@ -24,7 +24,7 @@ use gtk::traits;
 struct_Widget!(ToolButton)
 
 impl ToolButton {
-    pub fn new<T: traits::Widget>(icon_widget: Option<&T>, label: Option<&str>) -> Option<ToolButton> {
+    pub fn new<T: traits::Widget>(icon_widget: Option<&T>, label: Option<&str>) -> ToolButton {
         let tmp_pointer: *ffi::C_GtkWidget = unsafe {
             match label {
                 Some(l) => {
@@ -46,7 +46,7 @@ impl ToolButton {
         check_pointer!(tmp_pointer, ToolButton)
     }
 
-    pub fn new_from_stock(stock_id: &str) -> Option<ToolButton> {
+    pub fn new_from_stock(stock_id: &str) -> ToolButton {
         let tmp_pointer = stock_id.with_c_str(|c_str| {
             unsafe { ffi::gtk_tool_button_new_from_stock(c_str) }
         });

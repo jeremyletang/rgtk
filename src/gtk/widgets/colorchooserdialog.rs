@@ -22,7 +22,7 @@ use gtk;
 struct_Widget!(ColorChooserDialog)
 
 impl ColorChooserDialog {
-    pub fn new(title: &str, parent: Option<gtk::Window>) -> Option<ColorChooserDialog> {
+    pub fn new(title: &str, parent: Option<gtk::Window>) -> ColorChooserDialog {
         let tmp_pointer = unsafe {
             title.with_c_str(|c_str|{
                 ffi::gtk_color_chooser_dialog_new(c_str, match parent {
@@ -32,11 +32,7 @@ impl ColorChooserDialog {
             })
         };
 
-        if tmp_pointer.is_null() {
-            None
-        } else {
-            Some(traits::Widget::wrap(tmp_pointer))
-        }
+        check_pointer!(tmp_pointer, ColorChooserDialog)
     }
 }
 

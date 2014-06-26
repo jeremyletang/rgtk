@@ -24,7 +24,7 @@ use gtk::traits;
 struct_Widget!(ButtonBox)
 
 impl ButtonBox {
-    pub fn new(orientation: Orientation) -> Option<ButtonBox> {
+    pub fn new(orientation: Orientation) -> ButtonBox {
         let tmp_pointer = unsafe { ffi::gtk_button_box_new(orientation) };
         check_pointer!(tmp_pointer, ButtonBox)
     }

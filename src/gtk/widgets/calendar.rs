@@ -36,7 +36,7 @@ use gtk::ffi;
 struct_Widget!(Calendar)
 
 impl Calendar {
-    pub fn new() -> Option<Calendar> {
+    pub fn new() -> Calendar {
         let tmp_pointer = unsafe { ffi::gtk_calendar_new() };
         check_pointer!(tmp_pointer, Calendar)
     }

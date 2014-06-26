@@ -34,7 +34,7 @@ struct_Widget!(Scale)
 
 impl Scale {
     pub fn new(orientation: Orientation,
-               adjustment: &gtk::Adjustment) -> Option<Scale> {
+               adjustment: &gtk::Adjustment) -> Scale {
         let tmp_pointer = unsafe { ffi::gtk_scale_new(orientation, adjustment.get_pointer()) };
         check_pointer!(tmp_pointer, Scale)
     }
@@ -42,7 +42,7 @@ impl Scale {
     pub fn new_with_range(orientation: Orientation,
                           min: f64,
                           max: f64,
-                          step: f64) -> Option<Scale> {
+                          step: f64) -> Scale {
         let tmp_pointer = unsafe { ffi::gtk_scale_new_with_range(orientation, min as c_double, max as c_double, step as c_double) };
         check_pointer!(tmp_pointer, Scale)
     }

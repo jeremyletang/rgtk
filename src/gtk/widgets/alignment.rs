@@ -28,7 +28,7 @@ impl Alignment {
     pub fn new(x_align: f32,
                y_align: f32,
                x_scale: f32,
-               y_scale: f32) -> Option<Alignment> {
+               y_scale: f32) -> Alignment {
         let tmp_pointer = unsafe { ffi::gtk_alignment_new(x_align as c_float, y_align as c_float, x_scale as c_float, y_scale as c_float) };
         check_pointer!(tmp_pointer, Alignment)
     }

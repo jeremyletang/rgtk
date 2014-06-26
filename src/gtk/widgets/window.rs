@@ -32,7 +32,7 @@ use gtk::WindowType;
 struct_Widget!(Window)
 
 impl Window {
-    pub fn new(window_type: WindowType) -> Option<Window> {
+    pub fn new(window_type: WindowType) -> Window {
         let tmp_pointer = unsafe { ffi::gtk_window_new(window_type) };
         check_pointer!(tmp_pointer, Window)
     }

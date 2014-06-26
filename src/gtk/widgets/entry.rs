@@ -42,12 +42,12 @@ use gtk::traits;
 struct_Widget!(Entry)
 
 impl Entry {
-    pub fn new() -> Option<Entry> {
+    pub fn new() -> Entry {
         let tmp_pointer = unsafe { ffi::gtk_entry_new() };
         check_pointer!(tmp_pointer, Entry)
     }
 
-    pub fn new_with_buffer(buffer: &gtk::EntryBuffer) -> Option<Entry> {
+    pub fn new_with_buffer(buffer: &gtk::EntryBuffer) -> Entry {
         let tmp_pointer = unsafe { ffi::gtk_entry_new_with_buffer(buffer.get_pointer()) };
         check_pointer!(tmp_pointer, Entry)
     }

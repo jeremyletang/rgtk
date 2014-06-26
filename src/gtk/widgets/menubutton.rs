@@ -26,7 +26,7 @@ use gtk::ArrowType;
 struct_Widget!(MenuButton)
 
 impl MenuButton {
-    pub fn new() -> Option<MenuButton> {
+    pub fn new() -> MenuButton {
         let tmp_pointer = unsafe { ffi::gtk_menu_button_new() };
         check_pointer!(tmp_pointer, MenuButton)
     }

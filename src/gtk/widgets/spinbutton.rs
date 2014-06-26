@@ -39,12 +39,12 @@ struct_Widget!(SpinButton)
 impl SpinButton {
     pub fn new(adjustment: &gtk::Adjustment,
                climb_rate: f64,
-               digits: u32) -> Option<SpinButton> {
+               digits: u32) -> SpinButton {
         let tmp_pointer = unsafe { ffi::gtk_spin_button_new(adjustment.get_pointer(), climb_rate as c_double, digits as c_uint) };
         check_pointer!(tmp_pointer, SpinButton)
     }
 
-    pub fn new_with_range(min: f64, max: f64, step: f64) -> Option<SpinButton> {
+    pub fn new_with_range(min: f64, max: f64, step: f64) -> SpinButton {
         let tmp_pointer = unsafe { ffi::gtk_spin_button_new_with_range(min as c_double, max as c_double, step as c_double) };
         check_pointer!(tmp_pointer, SpinButton)
     }

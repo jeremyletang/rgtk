@@ -25,7 +25,7 @@ use gtk::traits;
 struct_Widget!(Arrow)
 
 impl Arrow {
-    pub fn new(arrow_type: ArrowType, shadow_type: ShadowType) -> Option<Arrow> {
+    pub fn new(arrow_type: ArrowType, shadow_type: ShadowType) -> Arrow {
         let tmp_pointer = unsafe { ffi::gtk_arrow_new(arrow_type, shadow_type) };
         check_pointer!(tmp_pointer, Arrow)
     }

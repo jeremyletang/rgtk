@@ -27,7 +27,7 @@ struct_Widget!(ProgressBar)
 
 
 impl ProgressBar {
-    pub fn new() -> Option<ProgressBar> {
+    pub fn new() -> ProgressBar {
         let tmp_pointer = unsafe { ffi::gtk_progress_bar_new() };
         check_pointer!(tmp_pointer, ProgressBar)
     }

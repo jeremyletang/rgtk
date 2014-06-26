@@ -31,7 +31,7 @@ struct_Widget!(LinkButton)
 
 
 impl LinkButton {
-    pub fn new(uri: &str) -> Option<LinkButton> {
+    pub fn new(uri: &str) -> LinkButton {
         let tmp_pointer = unsafe {
             uri.with_c_str(|c_str| {
                 ffi::gtk_link_button_new(c_str)
@@ -40,7 +40,7 @@ impl LinkButton {
         check_pointer!(tmp_pointer, LinkButton)
     }
 
-    pub fn new_with_label(uri: &str, label: &str) -> Option<LinkButton> {
+    pub fn new_with_label(uri: &str, label: &str) -> LinkButton {
         let tmp_pointer = unsafe {
             uri.with_c_str(|c_uri| {
                 label.with_c_str(|c_label| {

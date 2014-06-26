@@ -34,7 +34,7 @@ struct_Widget!(ScaleButton)
 
 impl ScaleButton {
     // FIXME: icons -> last parameter
-    pub fn new(size: IconSize, min: f64, max: f64, step: f64) -> Option<ScaleButton> {
+    pub fn new(size: IconSize, min: f64, max: f64, step: f64) -> ScaleButton {
         let tmp_pointer = unsafe { ffi::gtk_scale_button_new(size, min as c_double, max as c_double, step as c_double, ptr::null()) };
         check_pointer!(tmp_pointer, ScaleButton)
     }

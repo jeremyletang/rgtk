@@ -34,7 +34,7 @@ struct_Widget!(Label)
 
 
 impl Label {
-    pub fn new(text: &str) -> Option<Label> {
+    pub fn new(text: &str) -> Label {
         let tmp_pointer = unsafe {
             text.with_c_str(|c_str| {
                 ffi::gtk_label_new(c_str)
@@ -43,7 +43,7 @@ impl Label {
         check_pointer!(tmp_pointer, Label)
     }
 
-    pub fn new_with_mnemonic(text: &str) -> Option<Label> {
+    pub fn new_with_mnemonic(text: &str) -> Label {
         let tmp_pointer = unsafe {
             text.with_c_str(|c_str| {
                 ffi::gtk_label_new_with_mnemonic(c_str)

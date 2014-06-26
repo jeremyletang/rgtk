@@ -37,7 +37,7 @@ use gtk;
 struct_Widget!(Paned)
 
 impl Paned {
-    pub fn new(orientation: Orientation) -> Option<Paned> {
+    pub fn new(orientation: Orientation) -> Paned {
         let tmp_pointer = unsafe { ffi::gtk_paned_new(orientation) };
         check_pointer!(tmp_pointer, Paned)
     }

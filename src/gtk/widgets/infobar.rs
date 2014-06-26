@@ -27,7 +27,7 @@ use gtk::traits;
 struct_Widget!(InfoBar)
 
 impl InfoBar {
-    pub fn new() -> Option<InfoBar> {
+    pub fn new() -> InfoBar {
         let tmp_pointer = unsafe { ffi::gtk_info_bar_new() };
         check_pointer!(tmp_pointer, InfoBar)
     }

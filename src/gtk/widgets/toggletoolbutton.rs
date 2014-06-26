@@ -22,12 +22,12 @@ use gtk::traits;
 struct_Widget!(ToggleToolButton)
 
 impl ToggleToolButton {
-    pub fn new() -> Option<ToggleToolButton> {
+    pub fn new() -> ToggleToolButton {
         let tmp_pointer = unsafe { ffi::gtk_toggle_tool_button_new() };
         check_pointer!(tmp_pointer, ToggleToolButton)
     }
 
-    pub fn new_from_stock(stock_id: &str) -> Option<ToggleToolButton> {
+    pub fn new_from_stock(stock_id: &str) -> ToggleToolButton {
         let tmp_pointer = stock_id.with_c_str(|c_str| {
             unsafe { ffi::gtk_toggle_tool_button_new_from_stock(c_str) }
         });

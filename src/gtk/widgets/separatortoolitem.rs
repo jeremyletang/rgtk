@@ -23,7 +23,7 @@ use gtk::cast::GTK_SEPARATORTOOLITEM;
 struct_Widget!(SeparatorToolItem)
 
 impl SeparatorToolItem {
-    pub fn new() -> Option<SeparatorToolItem> {
+    pub fn new() -> SeparatorToolItem {
         let tmp_pointer = unsafe { ffi::gtk_separator_tool_item_new() };
         check_pointer!(tmp_pointer, SeparatorToolItem)
     }
