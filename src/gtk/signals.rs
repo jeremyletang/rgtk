@@ -91,7 +91,7 @@ macro_rules! signal(
 
     //TODO custom trampoline
     ($signal:ident, $class:ident ( $($arg_name:ident : $arg_type:ty),* ) -> $ret_type:ty,
-                    trampoline   ( $($t_arg_nm:ident : $t_arg_ty:ty),* ) -> $t_ret_ty:ty $t_blck:block) => (
+                    trampoline   ( $($t_arg_nm:ident : $t_arg_ty:ty),* ) -> $t_ret_ty:ty $t_blck:expr) => (
 
         //General case (see below)
         signal!($signal, $class [$(($arg_name : $arg_type)),*] -> $ret_type)
@@ -112,8 +112,8 @@ macro_rules! signal(
                 unsafe{
                     let ref signal = *user_data;
                     let cb : *|$($arg_type),*| -> $ret_type = transmute(signal.fetch_cb());
-                    let out = $blck
-                    out
+                    let out = $t_blck;
+                    out(cb)
                 }
             }
         }
@@ -166,7 +166,9 @@ signal!(child_notify,           ChildNotify(spec : glib::ParamSpec) -> ())
 signal!(composited_changed,     CompositedChanged() -> ())
 signal!(destroy,                Destroy() -> ())
 signal!(direction_changed,      DirectionChanged(previous_direction: gtk::TextDirection) -> ())
-signal!(draw,                   Draw(ctx : cairo::Context) -> ()) //TODO
+signal!(draw,                   Draw(ctx: cairo::Context) -> (), trampoline(ctx_raw: *cairo::ffi::cairo_t) -> () |cb: *|cairo::Context|| {
+    (*cb)(cairo::Context::wrap(ctx_raw))
+})
 signal!(focus,                  Focus(direction : gtk::DirectionType) -> bool)
 signal!(grab_focus,             GrabFocus() -> ())
 signal!(grab_notify,            GrabNotify(was_grabbed : bool) -> ())

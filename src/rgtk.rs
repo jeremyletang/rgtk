@@ -109,6 +109,10 @@ __rgtk__ is available under the same license term than GTK+, the LGPL (Lesser Ge
 #![feature(macro_rules)]
 #![allow(dead_code)] // TODO: drop this
 
+#![crate_id = "rgtk#0.0.1"]
+#![crate_type = "lib"]
+#![crate_type = "rlib"]
+
 // #[pkg_do(make)]
 extern crate libc;
 
