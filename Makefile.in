@@ -38,16 +38,16 @@ rgtk-build: src/*
 glue : $(GLUE_DST)/$(GLUE_LIBNAME).a
 
 $(GLUE_DST)/$(GLUE_LIBNAME).dylib: $(GLUE_SRC) | $(GLUE_DST)/
-					$(CC) $(INC) $(LIBS) -dynamiclib -o $(GLUE_DST)/$(GLUE_LIBNAME).dylib $(SRC)
+					$(CC) -D$(GTK_VERSION) $(INC) $(LIBS) -dynamiclib -o $(GLUE_DST)/$(GLUE_LIBNAME).dylib $(SRC)
 
 $(GLUE_DST)/$(GLUE_LIBNAME).o: $(GLUE_SRC) | $(GLUE_DST)/
-					$(CC) -g -c $^ $(INC) -o $@ $(LIBS)
+					$(CC) -D$(GTK_VERSION) -g -c $^ $(INC) -o $@ $(LIBS)
 
 $(GLUE_DST)/$(GLUE_LIBNAME).a: $(GLUE_DST)/$(GLUE_LIBNAME).o | $(GLUE_DST)/
 					ar -rcs $@ $^
 
 $(GLUE_DST)/$(GLUE_LIBNAME).so:    $(GLUE_DST)/$(GLUE_LIBNAME).o | $(GLUE_DST)/
-					$(CC) -shared -Wl,-soname,$(GLUE_LIBNAME).so -o $@ $^ -lc
+					$(CC) -D$(GTK_VERSION) -shared -Wl,-soname,$(GLUE_LIBNAME).so -o $@ $^ -lc
 
 # Examples
 .PHONY: examples cairotest gtktest
