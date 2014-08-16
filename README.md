@@ -1,4 +1,4 @@
-rgtk [![Build Status](https://travis-ci.org/jeremyletang/rgtk.svg?branch=master)](https://travis-ci.org/jeremyletang/rgtk)
+rgtk [![Build Status](https://travis-ci.org/jeremyletang/rgtk.svg?branch=master)](https://travis-ci.org/jeremyletang/rgtk) [![Gitter chat](https://badges.gitter.im/jeremyletang/rgtk.png)](https://gitter.im/jeremyletang/rgtk)
 ====
 
 __Rust__ bindings and wrappers for __GTK+__, __GLib__ and __Cairo__.
@@ -41,6 +41,11 @@ Then you can build __rgtk__ by generating the make file and then running `make`.
 ```Shell
 > ./configure
 > make
+```
+
+On OSX build may fail by not finding `GTK`, just add this var to your env:
+```Shell
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/X11/lib/pkgconfig
 ```
 
 In src/bin you can find some tests showing of some functionality, these can be build and run as follows:
