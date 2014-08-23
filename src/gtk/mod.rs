@@ -124,7 +124,8 @@ pub use self::widgets::{
     RecentFilter,
     RecentFilterInfo,
     RecentData,
-    RecentManager
+    RecentManager,
+    TextMark
 };
 
 #[cfg(GTK_3_6)]

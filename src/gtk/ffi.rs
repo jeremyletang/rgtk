@@ -221,6 +221,8 @@ pub struct C_GtkToggleToolButton;
 pub struct C_GtkRadioToolButton;
 #[repr(C)]
 pub struct C_GtkSeparatorToolItem;
+#[repr(C)]
+pub struct C_GtkTextMark;
 
 #[repr(C)]
 pub struct C_GtkMenu;
@@ -2014,6 +2016,17 @@ extern "C" {
     pub fn gtk_action_bar_set_center_widget (action_bar: *mut C_GtkActionBar, center_widget: *mut C_GtkWidget);
     pub fn gtk_action_bar_pack_start        (action_bar: *mut C_GtkActionBar, child: *mut C_GtkWidget);
     pub fn gtk_action_bar_pack_end          (action_bar: *mut C_GtkActionBar, child: *mut C_GtkWidget);
+
+    //=========================================================================
+    // GtkTextMark                                                           OK
+    //=========================================================================
+    pub fn gtk_text_mark_new              (name: *const c_char, left_gravity: Gboolean) -> *mut C_GtkTextMark;
+    pub fn gtk_text_mark_set_visible      (mark: *mut C_GtkTextMark, setting: Gboolean);
+    pub fn gtk_text_mark_get_visible      (mark: *mut C_GtkTextMark) -> Gboolean;
+    pub fn gtk_text_mark_get_name         (mark: *mut C_GtkTextMark) -> *const c_char;
+    pub fn gtk_text_mark_get_deleted      (mark: *mut C_GtkTextMark) -> Gboolean;
+    // pub fn gtk_text_mark_get_buffer       (mark: *const C_GtkTextMark) -> *const C_GtkTextBuffer;
+    pub fn gtk_text_mark_get_left_gravity (mark: *mut C_GtkTextMark) -> Gboolean;
 
     //=========================================================================
     // GtkDrawingArea

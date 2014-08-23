@@ -110,6 +110,7 @@ pub use self::recentinfo::RecentInfo;
 pub use self::recentfilterinfo::RecentFilterInfo;
 pub use self::recentdata::RecentData;
 pub use self::recentmanager::RecentManager;
+pub use self::text_mark::TextMark;
 
 mod window;
 mod label;
@@ -208,3 +209,4 @@ mod recentinfo;
 mod recentfilterinfo;
 mod recentdata;
 mod recentmanager;
+mod text_mark;
