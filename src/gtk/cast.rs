@@ -337,3 +337,7 @@ pub fn GTK_RECENT_INFO(widget: *mut ffi::C_GtkWidget) -> *mut ffi::C_GtkRecentIn
 pub fn GTK_EDITABLE(widget: *mut ffi::C_GtkWidget) -> *mut ffi::C_GtkEditable {
     unsafe{ ffi::cast_GtkEditable(widget) }
 }
+
+pub fn GTK_INVISIBLE(widget: *mut ffi::C_GtkWidget) -> *mut ffi::C_GtkInvisible {
+    unsafe{ ffi::cast_GtkInvisible(widget) }
+}

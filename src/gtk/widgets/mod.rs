@@ -112,6 +112,7 @@ pub use self::recentinfo::RecentInfo;
 pub use self::recentfilterinfo::RecentFilterInfo;
 pub use self::recentdata::RecentData;
 pub use self::recentmanager::RecentManager;
+pub use self::invisible::Invisible;
 
 mod window;
 mod label;
@@ -137,6 +138,7 @@ mod linkbutton;
 mod adjustment;
 mod scalebutton;
 mod volumebutton;
+mod invisible;
 mod grid;
 mod entrybuffer;
 mod entry;

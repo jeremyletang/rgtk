@@ -47,6 +47,10 @@ GtkLabel* cast_GtkLabel(GtkWidget* widget) {
     return GTK_LABEL(widget);
 }
 
+GtkInvisible* cast_GtkInvisible(GtkWidget* widget) {
+    return GTK_INVISIBLE(widget);
+}
+
 GtkButton* cast_GtkButton(GtkWidget* widget) {
     return GTK_BUTTON(widget);
 }
