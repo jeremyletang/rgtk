@@ -1341,6 +1341,16 @@ extern "C" {
     pub fn gtk_separator_new                   (orientation: gtk::Orientation) -> *mut C_GtkWidget;
 
     //=========================================================================
+    // GtkVSeparator                                                         OK
+    //=========================================================================
+    pub fn gtk_vseparator_new                   () -> *mut C_GtkWidget;
+
+    //=========================================================================
+    // GtkHSeparator                                                         OK
+    //=========================================================================
+    pub fn gtk_hseparator_new                   () -> *mut C_GtkWidget;
+
+    //=========================================================================
     // GtkAdjustment                                                         OK
     //=========================================================================
     pub fn gtk_adjustment_new                  (value: c_double, lower: c_double, upper: c_double, step_increment: c_double, page_increment: c_double, page_size: c_double) -> *mut C_GtkAdjustment;

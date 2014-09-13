@@ -72,6 +72,8 @@ pub use self::widgets::{
     AspectFrame,
     Fixed,
     Separator,
+    HSeparator,
+    VSeparator,
     FontButton,
     ToggleButton,
     CheckButton,
