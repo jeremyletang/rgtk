@@ -221,6 +221,8 @@ pub struct C_GtkToggleToolButton;
 pub struct C_GtkRadioToolButton;
 #[repr(C)]
 pub struct C_GtkSeparatorToolItem;
+#[repr(C)]
+pub struct C_GtkInvisible;
 
 #[repr(C)]
 pub struct C_GtkMenu;
@@ -586,6 +588,13 @@ extern "C" {
     pub fn gtk_container_get_border_width      (container: *mut C_GtkContainer) -> c_uint;
     pub fn gtk_container_set_border_width      (container: *mut C_GtkContainer, border_width: c_uint) -> ();
 
+    //=========================================================================
+    // GtkInvisible                                                      NOT OK
+    //=========================================================================
+    pub fn gtk_invisible_new() -> *mut C_GtkWidget;
+    //pub fn gtk_invisible_new_for_screen(screen: *mut C_GdkScreen) -> *mut C_GtkWidget;
+    //pub fn gtk_invisible_set_screen(invisible: *mut C_GtkInvisible, screen: *mut C_GdkScreen) -> ();
+    //pub fn gtk_invisible_get_screen(invisible: *mut C_GtkInvisible) -> *mut C_GdkScreen;
 
     //=========================================================================
     // GtkMisc                                                               OK
@@ -1339,6 +1348,16 @@ extern "C" {
     // GtkSeparator                                                          OK
     //=========================================================================
     pub fn gtk_separator_new                   (orientation: gtk::Orientation) -> *mut C_GtkWidget;
+
+    //=========================================================================
+    // GtkVSeparator                                                         OK
+    //=========================================================================
+    pub fn gtk_vseparator_new                   () -> *mut C_GtkWidget;
+
+    //=========================================================================
+    // GtkHSeparator                                                         OK
+    //=========================================================================
+    pub fn gtk_hseparator_new                   () -> *mut C_GtkWidget;
 
     //=========================================================================
     // GtkAdjustment                                                         OK
@@ -2129,6 +2148,7 @@ extern "C" {
     pub fn cast_GtkExpander(widget: *mut C_GtkWidget) -> *mut C_GtkExpander;
     pub fn cast_GtkPaned(widget: *mut C_GtkWidget) -> *mut C_GtkPaned;
     pub fn cast_GtkInfoBar(widget: *mut C_GtkWidget) -> *mut C_GtkInfoBar;
+    pub fn cast_GtkInvisible(widget: *mut C_GtkWidget) -> *mut C_GtkInvisible;
     pub fn cast_GtkToolShell(widget: *mut C_GtkWidget) -> *mut C_GtkToolShell;
     pub fn cast_GtkToolbar(widget: *mut C_GtkWidget) -> *mut C_GtkToolbar;
     pub fn cast_GtkToolItem(widget: *mut C_GtkWidget) -> *mut C_GtkToolItem;

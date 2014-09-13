@@ -13,23 +13,22 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with rgtk.  If not, see <http://www.gnu.org/licenses/>.
 
-//! A separator widget
+//! A horizontal separator widget
 
 use gtk::ffi;
 use gtk::traits;
-use gtk::Orientation;
 
-/// Separator — A separator widget
-struct_Widget!(Separator)
+/// Separator — A horizontal separator widget
+struct_Widget!(HSeparator)
 
-impl Separator {
-    pub fn new(orientation: Orientation) -> Option<Separator> {
-        let tmp_pointer = unsafe { ffi::gtk_separator_new(orientation) };
-        check_pointer!(tmp_pointer, Separator)
+impl HSeparator {
+    pub fn new() -> Option<HSeparator> {
+        let tmp_pointer = unsafe { ffi::gtk_hseparator_new() };
+        check_pointer!(tmp_pointer, HSeparator)
     }
 }
 
-impl_drop!(Separator)
-impl_TraitWidget!(Separator)
+impl_drop!(HSeparator)
+impl_TraitWidget!(HSeparator)
 
-impl traits::Orientable for Separator {}
+impl traits::Orientable for HSeparator {}

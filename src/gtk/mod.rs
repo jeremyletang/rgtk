@@ -72,6 +72,8 @@ pub use self::widgets::{
     AspectFrame,
     Fixed,
     Separator,
+    HSeparator,
+    VSeparator,
     FontButton,
     ToggleButton,
     CheckButton,
@@ -124,7 +126,8 @@ pub use self::widgets::{
     RecentFilter,
     RecentFilterInfo,
     RecentData,
-    RecentManager
+    RecentManager,
+    Invisible
 };
 
 #[cfg(GTK_3_6)]
