@@ -32,7 +32,7 @@ For OSX:
 > apt-get install gtk+3
 ```
 
-__rgtk__ targets __GTK+__ 3.12 but can also compile older versions 3.6, 3.8 and 3.10. Setting the environment variable `GTK_VERSION` to any of `GTK_3_6`, `GTK_3_8`, `GTK_3_10`, `GTK_3_12` allows pick a version. The default is GTK_3_12.
+__rgtk__ targets __GTK+__ 3.12 but can also compile older versions 3.6, 3.8 and 3.10. Setting the environment variable `GTK_VERSION` to any of `GTK_3_4`, `GTK_3_6`, `GTK_3_8`, `GTK_3_10`, `GTK_3_12` allows pick a version. The default is GTK_3_12.
 
 We are currently targetting rust master compiler to build __rgtk__, make sure you have the latest version before submitting any bugs.
 
@@ -52,10 +52,10 @@ In src/bin you can find some tests showing of some functionality, these can be b
 
 ```Shell
 > make gtktest
-> ./target/gtktest
+> ./target/examples/gtktest
 
 > make cairotest
-> ./target/cairotest
+> ./target/examples/cairotest
 ```
 
 __rgtk__ should build and work on both OSX and GNU/Linux. We plan on adding windows support in the future.

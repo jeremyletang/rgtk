@@ -357,9 +357,13 @@ GtkAppChooserDialog* cast_GtkAppChooserDialog(GtkWidget* widget) {
     return GTK_APP_CHOOSER_DIALOG(widget);
 }
 
+#ifndef GTK_3_4
+
 GtkLevelBar* cast_GtkLevelBar(GtkWidget* widget) {
     return GTK_LEVEL_BAR(widget);
 }
+
+#endif
 
 GtkFontChooserDialog* cast_GtkFontChooserDialog(GtkWidget* widget) {
     return GTK_FONT_CHOOSER_DIALOG(widget);
