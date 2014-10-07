@@ -19,7 +19,6 @@
 
 use gtk::ffi;
 use gtk::traits;
-use gtk::IconSize;
 
 /**
 * Button — A widget that emits a signal when clicked on
