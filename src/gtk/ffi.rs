@@ -316,6 +316,9 @@ pub struct C_GtkIconView;
 #[repr(C)]
 pub struct C_GtkTreeSelection;
 
+#[repr(C)]
+pub struct C_GtkMenuBar;
+
 pub fn to_gboolean(b: bool) -> Gboolean {
     match b {
         true => GTRUE,
@@ -2668,6 +2671,16 @@ extern "C" {
     pub fn gtk_menu_shell_get_parent_shell  (menu_shell: *mut C_GtkMenuShell) -> *mut C_GtkWidget;
     // GDK_AVAILABLE_IN_3_6
     // pub fn gtk_menu_shell_bind_model   (menu_shell: *mut C_GtkMenuShell, model: *mut C_GMenuModel, action_namespace: *mut c_char, with_separators: Gboolean);
+    
+    //=========================================================================
+    // GtkMenuBar
+    //=========================================================================
+    pub fn gtk_menu_bar_new () -> *mut C_GtkWidget;
+    pub fn gtk_menu_bar_new_from_model (model: *mut C_GMenuModel) -> *mut C_GtkWidget;
+    pub fn gtk_menu_bar_set_pack_direction (menubar: *mut C_GtkMenuBar, pack_dir:  gtk::PackDirection);
+    pub fn gtk_menu_bar_get_pack_direction (menubar: *mut C_GtkMenuBar) -> gtk::PackDirection;
+    pub fn gtk_menu_bar_set_child_pack_direction (menubar: *mut C_GtkMenuBar, child_pack_dir:  gtk::PackDirection);
+    pub fn gtk_menu_bar_get_child_pack_direction (menubar: *mut C_GtkMenuBar) -> gtk::PackDirection;
 
     //=========================================================================
     // GtkMenuItem
@@ -2897,6 +2910,7 @@ extern "C" {
     pub fn cast_GtkTreeView(widget: *mut C_GtkWidget) -> *mut C_GtkTreeView;
     pub fn cast_GtkCellRenderer(widget: *mut C_GtkWidget) -> *mut C_GtkCellRenderer;
     pub fn cast_GtkMenuShell(widget: *mut C_GtkWidget) -> *mut C_GtkMenuShell;
+    pub fn cast_GtkMenuBar(widget: *mut C_GtkWidget) -> *mut C_GtkMenuBar;
     pub fn cast_GtkMenuItem(widget: *mut C_GtkWidget) -> *mut C_GtkMenuItem;
     pub fn cast_GtkCheckMenuItem(widget: *mut C_GtkWidget) -> *mut C_GtkCheckMenuItem;
     pub fn cast_GtkViewport(widget: *mut C_GtkWidget) -> *mut C_GtkViewport;

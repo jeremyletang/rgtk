@@ -369,6 +369,10 @@ pub fn GTK_MENU_SHELL(widget: *mut ffi::C_GtkWidget) -> *mut ffi::C_GtkMenuShell
     unsafe { ffi::cast_GtkMenuShell(widget) }
 }
 
+pub fn GTK_MENU_BAR(widget: *mut ffi::C_GtkWidget) -> *mut ffi::C_GtkMenuBar {
+    unsafe { ffi::cast_GtkMenuBar(widget) }
+}
+
 pub fn GTK_MENU_ITEM(widget: *mut ffi::C_GtkWidget) -> *mut ffi::C_GtkMenuItem {
     unsafe { ffi::cast_GtkMenuItem(widget) }
 }

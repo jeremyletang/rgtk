@@ -20,19 +20,19 @@ use gtk::cast::GTK_MENU_SHELL;
 
 /// A base class for menu objects
 pub trait MenuShell: traits::Widget + traits::Container {
-    fn append(&mut self, widget: &traits::Widget) {
+    fn append<T: traits::Widget>(&mut self, widget: &T) {
         unsafe {
             ffi::gtk_menu_shell_append(GTK_MENU_SHELL(self.get_widget()), widget.get_widget())
         }
     }
 
-    fn prepend(&mut self, widget: &traits::Widget) {
+    fn prepend<T: traits::Widget>(&mut self, widget: &T) {
         unsafe {
             ffi::gtk_menu_shell_prepend(GTK_MENU_SHELL(self.get_widget()), widget.get_widget())
         }
     }
 
-    fn insert(&mut self, widget: &traits::Widget, position: i32) {
+    fn insert<T: traits::Widget>(&mut self, widget: &T, position: i32) {
         unsafe {
             ffi::gtk_menu_shell_insert(GTK_MENU_SHELL(self.get_widget()),
                                        widget.get_widget(),
@@ -46,7 +46,7 @@ pub trait MenuShell: traits::Widget + traits::Container {
         }
     }
 
-    fn select_item(&mut self, menu_item: &traits::MenuItem) {
+    fn select_item<T: traits::Widget>(&mut self, menu_item: &T) {
         unsafe {
             ffi::gtk_menu_shell_select_item(GTK_MENU_SHELL(self.get_widget()),
                                             menu_item.get_widget())
@@ -59,7 +59,7 @@ pub trait MenuShell: traits::Widget + traits::Container {
         }
     }
 
-    fn activate_item(&mut self, menu_item: &traits::MenuItem, force_deactivate: bool) {
+    fn activate_item<T: traits::Widget>(&mut self, menu_item: &T, force_deactivate: bool) {
         unsafe {
             ffi::gtk_menu_shell_activate_item(GTK_MENU_SHELL(self.get_widget()),
                                               menu_item.get_widget(),

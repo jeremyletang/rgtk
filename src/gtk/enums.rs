@@ -102,6 +102,7 @@ pub use self::tree_view_column_sizing::TreeViewColumnSizing;
 pub use self::cell_renderer_state::CellRendererState;
 pub use self::tree_model_flags::TreeModelFlags;
 pub use self::icon_view_drop_position::IconViewDropPosition;
+pub use self::pack_direction::PackDirection;
 
 pub mod window_type{
     #[repr(C)]
@@ -1477,5 +1478,21 @@ pub mod icon_view_drop_position {
         DropAbove,
         /// dropped item is inserted below
         DropBelow
+    }
+}
+
+///Determines how widgets should be packed inside menubars and menuitems contained in menubars.
+pub mod pack_direction {
+    #[repr(C)]
+    #[deriving(Clone, PartialEq, PartialOrd, Show)]
+    pub enum PackDirection {
+        ///Widgets are packed left-to-right
+        DirectionLTR,
+        ///Widgets are packed right-to-left
+        DirectionRTL,
+        ///Widgets are packed top-to-bottom
+        DirectionTTB,
+        ///Widgets are packed bottom-to-top
+        DirectionBTT
     }
 }

@@ -136,6 +136,7 @@ pub use self::widgets::{
     TreePath,
     TreeIter,
     TreeModel,
+    MenuBar,
     MenuItem,
     SeparatorMenuItem,
     CheckMenuItem,
@@ -251,7 +252,8 @@ pub use self::enums::{
     tree_view_column_sizing,
     cell_renderer_state,
     tree_model_flags,
-    icon_view_drop_position
+    icon_view_drop_position,
+    pack_direction
 };
 
 /// GTK Enum types
@@ -330,7 +332,8 @@ pub use self::enums::{
     TreeViewColumnSizing,
     CellRendererState,
     TreeModelFlags,
-    IconViewDropPosition
+    IconViewDropPosition,
+    PackDirection
 };
 
 /// GTK various struct
