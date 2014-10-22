@@ -523,6 +523,10 @@ GtkRecentChooserWidget *cast_GtkRecentChooserWidget(GtkWidget* widget) {
     return GTK_RECENT_CHOOSER_WIDGET(widget);
 }
 
+GObject* cast_GtkTreeViewColumnToGObject(GtkTreeViewColumn* object) {
+    return G_OBJECT(object);
+}
+
 // GType constants
 
 const GType g_type_invalid = G_TYPE_INVALID;
