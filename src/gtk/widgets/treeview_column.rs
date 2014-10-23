@@ -311,6 +311,16 @@ impl TreeViewColumn {
     }
 }
 
+impl ::glib::traits::FFIGObject for TreeViewColumn {
+    fn get_gobject(&self) -> *mut ::glib::ffi::C_GObject {
+        unsafe {
+            ffi::cast_GtkTreeViewColumnToGObject(self.pointer)
+        }
+    }
+}
+
+impl ::glib::traits::GObject for TreeViewColumn {}
+
 impl Drop for TreeViewColumn {
     fn drop(&mut self) {
         unsafe {

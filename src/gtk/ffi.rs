@@ -3133,4 +3133,5 @@ extern "C" {
     pub fn cast_GtkComboBox(widget: *mut C_GtkWidget) -> *mut C_GtkComboBox;
     pub fn cast_GtkPopover(widget: *mut C_GtkWidget) -> *mut C_GtkPopover;
     pub fn cast_GtkComboBoxText(widget: *mut C_GtkWidget) -> *mut C_GtkComboBoxText;
+    pub fn cast_GtkTreeViewColumnToGObject(treeview_column: *mut C_GtkTreeViewColumn) -> *mut glib::ffi::C_GObject;
 }
