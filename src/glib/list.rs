@@ -108,13 +108,11 @@ impl<T> List<T> {
     }
 }
 
-impl<T> Collection for List<T> {
+impl<T> List<T> {
     fn len(&self) -> uint {
         unsafe { ffi::g_list_length(self.pointer) as uint }
     }
-}
 
-impl<T> Mutable for List<T> {
     fn clear(&mut self) {
         unsafe {
             ffi::g_list_free(self.pointer)

@@ -46,8 +46,6 @@ pub trait Connect<'a, T: Signal<'a>>: FFIGObject {
     fn connect<'a>(&self, signal: Box<T>) -> () {
         use std::mem::transmute;
 
-        let signal = signal as Box<Signal<'a>>;
-
         unsafe {
             let signal_name     = signal.get_signal_name().to_string();
             let trampoline      = signal.get_trampoline();
