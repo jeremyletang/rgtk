@@ -93,7 +93,7 @@ impl<T> SList<T> {
     }
 }
 
-impl<T> Mutable for SList<T> {
+impl<T> SList<T> {
     fn clear(&mut self) {
         unsafe {
             ffi::g_slist_free(self.pointer)
@@ -119,7 +119,7 @@ impl<'a, T> Iterator<&'a T> for SElem<'a, T> {
     }
 }
 
-impl<T> Collection for SList<T> {
+impl<T> SList<T> {
     fn len(&self) -> uint {
         unsafe { ffi::g_slist_length(self.pointer) as uint }
     }
