@@ -38,6 +38,10 @@ pub use self::patterns::{
 
     //Enum
     MeshCorner,
+    MeshCorner0,
+    MeshCorner1,
+    MeshCorner2,
+    MeshCorner3
 };
 
 pub use self::fonts::{
