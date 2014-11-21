@@ -1,5 +1,5 @@
 
-use std::fmt::{Show, FormatError};
+use std::fmt::{Show, Error};
 use cairo::ffi;
 use std::c_str::CString;
 
@@ -50,7 +50,7 @@ pub enum Status {
 }
 
 impl Show for Status {
-    fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> Result<(), FormatError> {
+    fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> Result<(), Error> {
         let c_str = unsafe {
             let char_ptr = ffi::cairo_status_to_string(*self);
             CString::new(char_ptr, false) //FIXME I'm not sure if we actually own the str send in by cairo
