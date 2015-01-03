@@ -18,7 +18,7 @@ use libc::c_int;
 
 /// The PangoItem structure stores information about a segment of text.
 #[repr(C)]
-#[deriving(Copy)]
+#[derive(Copy)]
 pub struct Item {
     pointer: *mut ffi::C_PangoItem
 }
