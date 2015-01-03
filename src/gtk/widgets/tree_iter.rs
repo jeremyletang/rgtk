@@ -15,7 +15,7 @@
 
 use gtk::ffi;
 
-#[deriving(Copy)]
+#[derive(Copy)]
 pub struct TreeIter {
     pointer: *mut ffi::C_GtkTreeIter
 }

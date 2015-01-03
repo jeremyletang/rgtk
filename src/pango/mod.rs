@@ -13,27 +13,24 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with rgtk.  If not, see <http://www.gnu.org/licenses/>.
 
-use gtk::ffi;
+/*!
 
-#[derive(Copy)]
-pub struct TextChildAnchor {
-    pointer: *mut ffi::C_GtkTextChildAnchor
-}
+Bindings and wrappers for __PANGO__
 
-impl TextChildAnchor {
-    pub fn new() -> Option<TextChildAnchor> {
-        let tmp_pointer = unsafe { ffi::gtk_text_child_anchor_new() };
+*/
 
-        if tmp_pointer.is_null() {
-            None
-        } else {
-            Some(TextChildAnchor { pointer: tmp_pointer })
-        }
-    }
+pub use self::item::Item;
 
-    pub fn get_deleted(&self) -> bool {
-        unsafe { ffi::to_bool(ffi::gtk_text_child_anchor_get_deleted(self.pointer)) }
-    }
-}
+pub use self::enums::{
+    Gravity,
+    GravityHint,
+    Script,
+    Direction,
+    BidiType
+};
 
-impl_GObjectFunctions!(TextChildAnchor, C_GtkTextChildAnchor);
+mod item;
+pub mod enums;
+
+#[doc(hidden)]
+pub mod ffi;

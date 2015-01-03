@@ -129,3 +129,4 @@ pub mod gtk;
 pub mod cairo;
 pub mod gdk;
 pub mod glib;
+pub mod pango;
