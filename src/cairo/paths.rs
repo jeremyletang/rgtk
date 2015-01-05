@@ -80,7 +80,7 @@ pub struct PathSegments<'a> {
     num_data: uint
 }
 
-impl<'a> Iterator<PathSegment> for PathSegments<'a> {
+impl<'a> Iterator for PathSegments<'a> {
     fn next(&mut self) -> Option<PathSegment> {
         let i = self.i;
 
