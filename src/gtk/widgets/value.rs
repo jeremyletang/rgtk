@@ -16,7 +16,7 @@
 //! Generic values — A polymorphic type that can hold values of any other type
 
 use gtk::{self, ffi};
-use std::c_str::ToCStr;
+use std::ffi::CString;
 
 trait GValuePrivate {
     fn get(gvalue: &GValue) -> Self;
@@ -62,7 +62,7 @@ impl GValue {
         if tmp_pointer.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(tmp_pointer as *const u8) })
+            Some(unsafe { String::from_utf8(tmp_pointer as *const u8) })
         }
     }
 
@@ -175,10 +175,9 @@ impl GValue {
     }
 
     fn set_string(&self, v_string: &str) {
+        let c_str = CString::from_slice(v_string.as_bytes());
         unsafe {
-            v_string.with_c_str(|c_str| {
-                ffi::g_value_set_string(self.pointer, c_str)
-            })
+            ffi::g_value_set_string(self.pointer, c_str)
         }
     }
 
@@ -196,7 +195,6 @@ impl GValue {
         unsafe {
             v_string.with_c_str(|c_str| {
                 ffi::g_value_take_string(self.pointer, c_str)
-            })
         }
     }*/
 
@@ -206,7 +204,7 @@ impl GValue {
         if tmp_pointer.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(tmp_pointer as *const u8) })
+            Some(unsafe { String::from_utf8(tmp_pointer as *const u8) })
         }
     }
 
@@ -217,7 +215,7 @@ impl GValue {
         if tmp_pointer.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(tmp_pointer as *const u8) })
+            Some(unsafe { String::from_utf8(tmp_pointer as *const u8) })
         }
     }
 

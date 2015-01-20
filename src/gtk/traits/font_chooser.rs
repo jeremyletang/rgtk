@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with rgtk.  If not, see <http://www.gnu.org/licenses/>.
 
-use std::c_str::ToCStr;
+use std::ffi::CString;
 use gtk::cast::{GTK_FONT_CHOOSER};
 use gtk::{self, ffi};
 use gtk::ffi::FFIWidget;
@@ -30,15 +30,14 @@ pub trait FontChooserTrait: gtk::WidgetTrait {
         if tmp.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(tmp as *const u8) })
+            Some(unsafe { String::from_utf8(tmp as *const u8) })
         }
     }
 
     fn set_font(&self, font_name: &str) {
         unsafe {
-            font_name.with_c_str(|c_str| {
-                ffi::gtk_font_chooser_set_font(GTK_FONT_CHOOSER(self.get_widget()), c_str as *mut c_char)
-            })
+            let c_str = CString::from_slice(font_name.as_bytes());
+            ffi::gtk_font_chooser_set_font(GTK_FONT_CHOOSER(self.get_widget()), c_str as *mut c_char)
         }
     }
 
@@ -48,7 +47,7 @@ pub trait FontChooserTrait: gtk::WidgetTrait {
         if tmp.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(tmp as *const u8) })
+            Some(unsafe { String::from_utf8(tmp as *const u8) })
         }
     }
 
@@ -68,9 +67,11 @@ pub trait FontChooserTrait: gtk::WidgetTrait {
     }
 
     fn set_show_preview_entry(&self, show_preview_entry: bool) {
-        unsafe { ffi::gtk_font_chooser_set_show_preview_entry(GTK_FONT_CHOOSER(self.get_widget()), match show_preview_entry {
-            true => ffi::GTRUE,
-            false => ffi::GFALSE
-        }) }
+        unsafe { ffi::gtk_font_chooser_set_show_preview_entry(GTK_FONT_CHOOSER(self.get_widget()),
+                                                              match show_preview_entry {
+                                                                  true => ffi::GTRUE,
+                                                                  false => ffi::GFALSE
+                                                              });
+        }
     }
 }

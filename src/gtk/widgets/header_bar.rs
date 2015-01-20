@@ -13,14 +13,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with rgtk.  If not, see <http://www.gnu.org/licenses/>.
 
-//! A box with a centered child
+//! A Box::new(with) a centered child
 
 // FIXME: add missing methods (3.12)
 
 use gtk::cast::{GTK_HEADER_BAR};
 use gtk::{self, ffi};
 
-/// GtkHeaderBar — A box with a centered child
+/// GtkHeaderBar — A Box::new(with) a centered child
 struct_Widget!(HeaderBar);
 
 impl HeaderBar {
@@ -30,10 +30,9 @@ impl HeaderBar {
     }
 
     pub fn set_title(&mut self, title: &str) {
+        let c_str = CString::from_slice(title.as_bytes());
         unsafe {
-            title.with_c_str(|c_str| {
-                ffi::gtk_header_bar_set_title(GTK_HEADER_BAR(self.pointer), c_str)
-            })
+            ffi::gtk_header_bar_set_title(GTK_HEADER_BAR(self.pointer), c_str)
         }
     }
 
@@ -42,15 +41,14 @@ impl HeaderBar {
         if c_title.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(c_title as *const u8) })
+            Some(unsafe { String::from_utf8(c_title as *const u8) })
         }
     }
 
     pub fn set_subtitle(&mut self, subtitle: &str) {
+        let c_str = CString::from_slice(subtitle.as_bytes());
         unsafe {
-            subtitle.with_c_str(|c_str| {
-                ffi::gtk_header_bar_set_subtitle(GTK_HEADER_BAR(self.pointer), c_str)
-            })
+            ffi::gtk_header_bar_set_subtitle(GTK_HEADER_BAR(self.pointer), c_str)
         }
     }
 
@@ -59,7 +57,7 @@ impl HeaderBar {
         if c_subtitle.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(c_subtitle as *const u8) })
+            Some(unsafe { String::from_utf8(c_subtitle as *const u8) })
         }
     }
 

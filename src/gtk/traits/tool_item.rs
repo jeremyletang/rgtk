@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with rgtk.  If not, see <http://www.gnu.org/licenses/>.
 
-use std::c_str::ToCStr;
+use std::ffi::CString;
 use gtk::{self, ffi};
 use gtk::cast::GTK_TOOLITEM;
 use gtk::{IconSize, Orientation, ReliefStyle, ToolbarStyle};
@@ -104,19 +104,15 @@ pub trait ToolItemTrait: gtk::WidgetTrait + gtk::ContainerTrait + gtk::BinTrait 
     }
 
     fn set_tooltip_text(&mut self, text: &str) -> () {
+        let c_str = CString::from_slice(text.as_bytes());
         unsafe {
-            text.with_c_str(|c_str| {
-                ffi::gtk_tool_item_set_tooltip_text(GTK_TOOLITEM(self.get_widget()), c_str)
-            })
+            ffi::gtk_tool_item_set_tooltip_text(GTK_TOOLITEM(self.get_widget()), c_str)
         }
     }
 
     fn set_tooltip_markup(&mut self, markup: &str) -> () {
-        unsafe {
-            markup.with_c_str(|c_str| {
-                ffi::gtk_tool_item_set_tooltip_markup(GTK_TOOLITEM(self.get_widget()), c_str)
-            })
-        }
+        let c_str = CString::from_slice(markup.as_bytes());
+        ffi::gtk_tool_item_set_tooltip_markup(GTK_TOOLITEM(self.get_widget()), c_str)
     }
 
     fn get_icon_size(&self) -> IconSize {
@@ -177,4 +173,3 @@ pub trait ToolItemTrait: gtk::WidgetTrait + gtk::ContainerTrait + gtk::BinTrait 
         }
     }
 }
-

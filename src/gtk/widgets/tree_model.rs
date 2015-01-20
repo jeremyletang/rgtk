@@ -13,11 +13,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with rgtk.  If not, see <http://www.gnu.org/licenses/>.
 
-use gtk::{self, ffi};
 use glib::ffi::GType;
-use gtk::{GValue, TreeIter, TreePath};
-use std::c_str::CString;
-use std::c_str::ToCStr;
+use gtk::{self, ffi, GValue, TreeIter, TreePath};
+use std::ffi::CString;
+use libc;
 
 pub struct TreeModel {
     pointer: *mut ffi::C_GtkTreeModel
@@ -44,12 +43,11 @@ impl TreeModel {
     }
 
     pub fn get_iter_from_string(&self, iter: &mut TreeIter, path_string: &str) -> bool {
-        path_string.with_c_str(|c_str| {
-            match unsafe { ffi::gtk_tree_model_get_iter_from_string(self.pointer, iter.get_pointer(), c_str) } {
+        let c_str = CString::from_slice(path_string.as_bytes());
+        match unsafe { ffi::gtk_tree_model_get_iter_from_string(self.pointer, iter.get_pointer(), c_str.as_ptr()) } {
                 0 => false,
                 _ => true
             }
-        })
     }
 
     pub fn get_iter_first(&self, iter: &mut TreeIter) -> bool {
@@ -138,10 +136,9 @@ impl TreeModel {
             String::new()
         } else {
             unsafe {
-                // used to free the returned string
-                let container = CString::new(string as *const i8, true);
-
-                String::from_raw_buf(string as *const u8)
+                let res = String::from_utf8(string as *const u8);
+                libc::free(string);
+                res
             }
         }
     }

@@ -13,16 +13,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with rgtk.  If not, see <http://www.gnu.org/licenses/>.
 
-use std::c_str::ToCStr;
+use std::ffi::CString;
 use gtk::cast::GTK_TOOLBUTTON;
 use gtk::{self, ffi};
 
 pub trait ToolButtonTrait: gtk::WidgetTrait + gtk::ContainerTrait + gtk::BinTrait + gtk::ToolItemTrait {
     fn set_label(&mut self, label: &str) -> () {
         unsafe {
-            label.with_c_str(|c_str| {
-                ffi::gtk_tool_button_set_label(GTK_TOOLBUTTON(self.get_widget()), c_str)
-            });
+            let c_str = CString::from_slice(label.as_bytes());
+            ffi::gtk_tool_button_set_label(GTK_TOOLBUTTON(self.get_widget()), c_str)
         }
     }
 
@@ -35,10 +34,9 @@ pub trait ToolButtonTrait: gtk::WidgetTrait + gtk::ContainerTrait + gtk::BinTrai
     }
 
     fn set_icon_name(&mut self, icon_name: &str) -> () {
+        let c_str = CString::from_slice(icon_name.as_bytes());
         unsafe {
-            icon_name.with_c_str(|c_str| {
-                ffi::gtk_tool_button_set_icon_name(GTK_TOOLBUTTON(self.get_widget()), c_str)
-            });
+            ffi::gtk_tool_button_set_icon_name(GTK_TOOLBUTTON(self.get_widget()), c_str);
         }
     }
 
@@ -48,7 +46,7 @@ pub trait ToolButtonTrait: gtk::WidgetTrait + gtk::ContainerTrait + gtk::BinTrai
             if c_str.is_null() {
                 None
             } else {
-                Some(String::from_raw_buf(c_str as *const u8))
+                Some(String::from_utf8(c_str as *const u8))
             }
         }
     }
@@ -59,7 +57,7 @@ pub trait ToolButtonTrait: gtk::WidgetTrait + gtk::ContainerTrait + gtk::BinTrai
             if c_str.is_null() {
                 None
             } else {
-                Some(String::from_raw_buf(c_str as *const u8))
+                Some(String::from_utf8(c_str as *const u8))
             }
         }
     }
@@ -70,7 +68,7 @@ pub trait ToolButtonTrait: gtk::WidgetTrait + gtk::ContainerTrait + gtk::BinTrai
             if c_str.is_null() {
                 None
             } else {
-                Some(String::from_raw_buf(c_str as *const u8))
+                Some(String::from_utf8(c_str as *const u8))
             }
         }
     }
@@ -106,4 +104,3 @@ pub trait ToolButtonTrait: gtk::WidgetTrait + gtk::ContainerTrait + gtk::BinTrai
         }
     }
 }
-

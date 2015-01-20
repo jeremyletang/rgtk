@@ -16,7 +16,7 @@
 use gtk::{self, ffi};
 use gtk::ffi::FFIWidget;
 use gtk::cast::GTK_ABOUT_DIALOG;
-use std::c_str::ToCStr;
+use std::ffi::CString;
 
 struct_Widget!(AboutDialog);
 
@@ -37,15 +37,14 @@ impl AboutDialog {
         if name.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(name as *const u8) })
+            Some(unsafe { String::from_utf8(name as *const u8) })
         }
     }
 
     pub fn set_program_name(&self, name: &str) -> () {
         unsafe {
-            name.with_c_str(|c_str| {
-                ffi::gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(self.get_widget()), c_str)
-            })
+            let c_str = CString::from_slice(name.as_bytes());
+            ffi::gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(self.get_widget()), c_str)
         };
     }
 
@@ -55,7 +54,7 @@ impl AboutDialog {
         if version.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(version as *const u8) })
+            Some(unsafe { String::from_utf8(version as *const u8) })
         }
     }
 
@@ -73,7 +72,7 @@ impl AboutDialog {
         if copyright.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(copyright as *const u8) })
+            Some(unsafe { String::from_utf8(copyright as *const u8) })
         }
     }
 
@@ -91,7 +90,7 @@ impl AboutDialog {
         if comments.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(comments as *const u8) })
+            Some(unsafe { String::from_utf8(comments as *const u8) })
         }
     }
 
@@ -109,7 +108,7 @@ impl AboutDialog {
         if license.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(license as *const u8) })
+            Some(unsafe { String::from_utf8(license as *const u8) })
         }
     }
 
@@ -149,7 +148,7 @@ impl AboutDialog {
         if website.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(website as *const u8) })
+            Some(unsafe { String::from_utf8(website as *const u8) })
         }
     }
 
@@ -167,7 +166,7 @@ impl AboutDialog {
         if website_label.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(website_label as *const u8) })
+            Some(unsafe { String::from_utf8(website_label as *const u8) })
         }
     }
 
@@ -193,7 +192,7 @@ impl AboutDialog {
                     if tmp.is_null() {
                         break;
                     }
-                    ret.push(String::from_raw_buf(*tmp as *const u8));
+                    ret.push(String::from_utf8(*tmp as *const u8));
                     it += 1;
                 }
             }
@@ -224,7 +223,7 @@ impl AboutDialog {
                     if tmp.is_null() {
                         break;
                     }
-                    ret.push(String::from_raw_buf(*tmp as *const u8));
+                    ret.push(String::from_utf8(*tmp as *const u8));
                     it += 1;
                 }
             }
@@ -255,7 +254,7 @@ impl AboutDialog {
                     if tmp.is_null() {
                         break;
                     }
-                    ret.push(String::from_raw_buf(*tmp as *const u8));
+                    ret.push(String::from_utf8(*tmp as *const u8));
                     it += 1;
                 }
             }
@@ -278,7 +277,7 @@ impl AboutDialog {
         if translator_credits.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(translator_credits as *const u8) })
+            Some(unsafe { String::from_utf8(translator_credits as *const u8) })
         }
     }
 
@@ -310,7 +309,7 @@ impl AboutDialog {
         if logo_icon_name.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(logo_icon_name as *const u8) })
+            Some(unsafe { String::from_utf8(logo_icon_name as *const u8) })
         }
     }
 
@@ -329,9 +328,8 @@ impl AboutDialog {
             tmp.as_slice().with_c_str(|c_str|{tmp_vec.push(c_str)});
         }
         unsafe {
-            section_name.with_c_str(|c_str| {
-                ffi::gtk_about_dialog_add_credit_section(GTK_ABOUT_DIALOG(self.get_widget()), c_str, tmp_vec.as_slice().as_ptr())
-            })
+            let c_str = CString::from_slice(section_name.as_bytes());
+            ffi::gtk_about_dialog_add_credit_section(GTK_ABOUT_DIALOG(self.get_widget()), c_str, tmp_vec.as_slice().as_ptr())
         }
     }
 

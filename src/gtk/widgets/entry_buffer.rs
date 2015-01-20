@@ -16,7 +16,7 @@
 //! Text buffer for gtk::Entry
 
 use libc::{c_int, c_uint};
-use std::c_str::ToCStr;
+use std::ffi::CString;
 use gtk::ffi;
 
 // TODO:
@@ -36,9 +36,8 @@ pub struct EntryBuffer {
 impl EntryBuffer {
     pub fn new(initial_chars: &str) -> Option<EntryBuffer> {
         let tmp_pointer = unsafe {
-            initial_chars.with_c_str(|c_str| {
-                ffi::gtk_entry_buffer_new(c_str, initial_chars.len() as c_int)
-            })
+            let c_str = CString::from_slice(initial_chars.as_bytes());
+            ffi::gtk_entry_buffer_new(c_str, initial_chars.len() as c_int)
         };
         if tmp_pointer.is_null() {
             None
@@ -51,14 +50,13 @@ impl EntryBuffer {
 
     pub fn get_text(&self) -> String {
         let c_str = unsafe { ffi::gtk_entry_buffer_get_text(self.pointer) };
-        unsafe {String::from_raw_buf(c_str as *const u8) }
+        unsafe {String::from_utf8(c_str as *const u8) }
     }
 
     pub fn set_text(&mut self, text: &str) -> () {
+        let c_str = CString::from_slice(text.as_bytes());
         unsafe {
-            text.with_c_str(|c_str| {
-                ffi::gtk_entry_buffer_set_text(self.pointer, c_str, text.len() as c_int)
-            });
+            ffi::gtk_entry_buffer_set_text(self.pointer, c_str, text.len() as c_int);
         }
     }
 

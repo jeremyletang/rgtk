@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with rgtk.  If not, see <http://www.gnu.org/licenses/>.
 
-use std::c_str::ToCStr;
+use std::ffi::CString;
 use gtk;
 use gtk::cast::GTK_FILE_CHOOSER;
 use gtk::ffi::{self, FFIWidget};
@@ -101,9 +101,8 @@ pub trait FileChooserTrait: gtk::WidgetTrait {
 
     fn set_current_name(&self, name: &str) -> () {
         unsafe {
-            name.with_c_str(|c_str| {
-                ffi::gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(self.get_widget()), c_str)
-            })
+            let c_str = CString::from_slice(name.as_bytes());
+            ffi::gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(self.get_widget()), c_str)
         }
     }
 
@@ -113,7 +112,7 @@ pub trait FileChooserTrait: gtk::WidgetTrait {
         if name.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(name as *const u8) })
+            Some(unsafe { String::from_utf8(name as *const u8) })
         }
     }
 
@@ -134,7 +133,7 @@ pub trait FileChooserTrait: gtk::WidgetTrait {
         if filename.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(filename as *const u8) })
+            Some(unsafe { String::from_utf8(filename as *const u8) })
         }
     }
 
@@ -176,7 +175,7 @@ pub trait FileChooserTrait: gtk::WidgetTrait {
 
             for it in old_list.iter() {
                 unsafe {
-                    tmp_vec.append(String::from_raw_buf(*it as *const u8));
+                    tmp_vec.append(String::from_utf8(*it as *const u8));
                 }
             }
             tmp_vec
@@ -200,7 +199,7 @@ pub trait FileChooserTrait: gtk::WidgetTrait {
         if filename.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(filename as *const u8) })
+            Some(unsafe { String::from_utf8(filename as *const u8) })
         }
     }
 
@@ -221,7 +220,7 @@ pub trait FileChooserTrait: gtk::WidgetTrait {
         if uri.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(uri as *const u8) })
+            Some(unsafe { String::from_utf8(uri as *const u8) })
         }
     }
 
@@ -255,7 +254,7 @@ pub trait FileChooserTrait: gtk::WidgetTrait {
 
             for it in old_list.iter() {
                 unsafe {
-                    tmp_vec.append(String::from_raw_buf(*it as *const u8));
+                    tmp_vec.append(String::from_utf8(*it as *const u8));
                 }
             }
             tmp_vec
@@ -279,7 +278,7 @@ pub trait FileChooserTrait: gtk::WidgetTrait {
         if uri.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(uri as *const u8) })
+            Some(unsafe { String::from_utf8(uri as *const u8) })
         }
     }
 
@@ -331,7 +330,7 @@ pub trait FileChooserTrait: gtk::WidgetTrait {
         if filename.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(filename as *const u8) })
+            Some(unsafe { String::from_utf8(filename as *const u8) })
         }
     }
 
@@ -341,7 +340,7 @@ pub trait FileChooserTrait: gtk::WidgetTrait {
         if uri.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(uri as *const u8) })
+            Some(unsafe { String::from_utf8(uri as *const u8) })
         }
     }
 
@@ -412,9 +411,8 @@ pub trait FileChooserTrait: gtk::WidgetTrait {
 
     fn remove_shortcut_folder_uri(&self, uri: &str, error: &mut glib::Error) -> bool {
         match unsafe {
-            uri.with_c_str(|c_str| {
-                ffi::gtk_file_chooser_remove_shortcut_folder(GTK_FILE_CHOOSER(self.get_widget()), c_str, &mut error.unwrap())
-            })
+            let c_str = CString::from_slice(uri.as_bytes());
+            ffi::gtk_file_chooser_remove_shortcut_folder(GTK_FILE_CHOOSER(self.get_widget()), c_str, &mut error.unwrap())
         } {
             ffi::GFALSE => false,
             _ => true

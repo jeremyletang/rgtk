@@ -16,7 +16,7 @@
 use gtk::{self, ffi};
 use gtk::ffi::FFIWidget;
 use gtk::cast::{GTK_PRINT_SETTINGS, GTK_PAPER_SIZE};
-use std::c_str::ToCStr;
+use std::ffi::CString;
 
 struct_Widget!(PrintSettings);
 
@@ -42,9 +42,10 @@ impl PrintSettings {
     }
 
     pub fn has_key(&self, key: &str) -> bool {
-        match unsafe { key.with_c_str(|c_str| {
+        let c_str = CString::from_slice(key.as_bytes());
+        match unsafe {
             ffi::gtk_print_settings_has_key(GTK_PRINT_SETTINGS(self.get_widget()), c_str)
-        }) } {
+        } {
             ffi::GFALSE => false,
             _ => true
         }
@@ -58,7 +59,7 @@ impl PrintSettings {
         if tmp.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(tmp as *const u8) })
+            Some(unsafe { String::from_utf8(tmp as *const u8) })
         }
     }
 
@@ -148,7 +149,7 @@ impl PrintSettings {
         if tmp.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(tmp as *const u8) })
+            Some(unsafe { String::from_utf8(tmp as *const u8) })
         }
     }
 
@@ -232,10 +233,12 @@ impl PrintSettings {
     }
 
     pub fn set_reverse(&self, reverse: bool) {
-        unsafe { ffi::gtk_print_settings_set_reverse(GTK_PRINT_SETTINGS(self.get_widget()), match reverse {
-            true => ffi::GTRUE,
-            false => ffi::GFALSE
-        }) }
+        unsafe { ffi::gtk_print_settings_set_reverse(GTK_PRINT_SETTINGS(self.get_widget()),
+                                                     match reverse {
+                                                         true => ffi::GTRUE,
+                                                         false => ffi::GFALSE
+                                                     })
+        }
     }
 
     pub fn get_n_copies(&self) -> i32 {
@@ -312,7 +315,7 @@ impl PrintSettings {
         if tmp.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(tmp as *const u8) })
+            Some(unsafe { String::from_utf8(tmp as *const u8) })
         }
     }
 
@@ -328,7 +331,7 @@ impl PrintSettings {
         if tmp.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(tmp as *const u8) })
+            Some(unsafe { String::from_utf8(tmp as *const u8) })
         }
     }
 
@@ -344,7 +347,7 @@ impl PrintSettings {
         if tmp.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(tmp as *const u8) })
+            Some(unsafe { String::from_utf8(tmp as *const u8) })
         }
     }
 
@@ -360,7 +363,7 @@ impl PrintSettings {
         if tmp.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(tmp as *const u8) })
+            Some(unsafe { String::from_utf8(tmp as *const u8) })
         }
     }
 
@@ -376,7 +379,7 @@ impl PrintSettings {
         if tmp.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(tmp as *const u8) })
+            Some(unsafe { String::from_utf8(tmp as *const u8) })
         }
     }
 

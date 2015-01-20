@@ -14,7 +14,7 @@
 // along with rgtk.  If not, see <http://www.gnu.org/licenses/>.
 
 use libc::{c_int, c_double};
-use std::c_str::ToCStr;
+use std::ffi::CString;
 
 use gtk::{self, ffi};
 use gtk::Justification;
@@ -23,16 +23,15 @@ use gtk::cast::GTK_LABEL;
 pub trait LabelTrait: gtk::WidgetTrait {
     fn set_label(&mut self, text: &str) -> () {
         unsafe {
-            text.with_c_str(|c_str| {
-                ffi::gtk_label_set_label(GTK_LABEL(self.get_widget()), c_str)
-            });
+            let c_str = CString::from_slice(text.as_bytes());
+            ffi::gtk_label_set_label(GTK_LABEL(self.get_widget()), c_str.as_ptr())
         }
     }
 
     fn set_text(&mut self, text: &str) -> () {
         unsafe {
             text.with_c_str(|c_str| {
-                ffi::gtk_label_set_text(GTK_LABEL(self.get_widget()), c_str)
+                ffi::gtk_label_set_text(GTK_LABEL(self.get_widget()), c_str.as_ptr())
             });
         }
     }
@@ -46,7 +45,7 @@ pub trait LabelTrait: gtk::WidgetTrait {
     fn set_markup(&mut self, text: &str) -> () {
         unsafe {
             text.with_c_str(|c_str| {
-                ffi::gtk_label_set_markup(GTK_LABEL(self.get_widget()), c_str)
+                ffi::gtk_label_set_markup(GTK_LABEL(self.get_widget()), c_str.as_ptr())
             });
         }
     }
@@ -54,7 +53,7 @@ pub trait LabelTrait: gtk::WidgetTrait {
     fn set_markup_with_mnemonic(&mut self, text: &str) -> () {
         unsafe {
             text.with_c_str(|c_str| {
-                ffi::gtk_label_set_markup_with_mnemonic(GTK_LABEL(self.get_widget()), c_str)
+                ffi::gtk_label_set_markup_with_mnemonic(GTK_LABEL(self.get_widget()), c_str.as_ptr())
             });
         }
     }
@@ -62,16 +61,15 @@ pub trait LabelTrait: gtk::WidgetTrait {
     fn set_pattern(&mut self, text: &str) -> () {
         unsafe {
             text.with_c_str(|c_str| {
-                ffi::gtk_label_set_pattern(GTK_LABEL(self.get_widget()), c_str)
+                ffi::gtk_label_set_pattern(GTK_LABEL(self.get_widget()), c_str.as_ptr())
             });
         }
     }
 
     fn set_text_with_mnemonic(&mut self, text: &str) -> () {
+        let c_str = CString::from_slice(text);
         unsafe {
-            text.with_c_str(|c_str| {
-                ffi::gtk_label_set_text_with_mnemonic(GTK_LABEL(self.get_widget()), c_str)
-            });
+            ffi::gtk_label_set_text_with_mnemonic(GTK_LABEL(self.get_widget()), c_str.as_ptr());
         }
     }
 
@@ -206,7 +204,7 @@ pub trait LabelTrait: gtk::WidgetTrait {
             if c_str.is_null() {
                 None
             } else {
-                Some(String::from_raw_buf(c_str as *const u8))
+                Some(String::from_utf8(c_str as *const u8))
             }
         }
     }
@@ -217,7 +215,7 @@ pub trait LabelTrait: gtk::WidgetTrait {
             if c_str.is_null() {
                 None
             } else {
-                Some(String::from_raw_buf(c_str as *const u8))
+                Some(String::from_utf8(c_str as *const u8))
             }
         }
     }
@@ -228,7 +226,7 @@ pub trait LabelTrait: gtk::WidgetTrait {
             if c_str.is_null() {
                 None
             } else {
-                Some(String::from_raw_buf(c_str as *const u8))
+                Some(String::from_utf8(c_str as *const u8))
             }
         }
     }
@@ -278,4 +276,3 @@ pub trait LabelTrait: gtk::WidgetTrait {
         }
     }
 }
-

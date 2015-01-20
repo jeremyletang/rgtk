@@ -13,9 +13,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with rgtk.  If not, see <http://www.gnu.org/licenses/>.
 
+extern crate libc;
+
 use gtk::ffi;
-use std::c_str::CString;
-use std::c_str::ToCStr;
+use std::ffi::CString;
+use libc::free;
 
 #[derive(Copy)]
 pub struct TreePath {
@@ -36,10 +38,9 @@ impl TreePath {
     }
 
     pub fn new_from_string(path: &str) -> Option<TreePath> {
+        let c_str = CString::from_slice(path.as_bytes());
         let tmp = unsafe {
-            path.with_c_str(|c_str| {
-                ffi::gtk_tree_path_new_from_string(c_str)
-            })
+            ffi::gtk_tree_path_new_from_string(c_str.as_ptr())
         };
 
         if tmp.is_null() {
@@ -83,10 +84,9 @@ impl TreePath {
             String::new()
         } else {
             unsafe {
-                // used to free the returned string
-                let container = CString::new(string as *const i8, true);
-
-                String::from_raw_buf(string as *const u8)
+                let res = String::from_utf8(string as *const u8);
+                libc::free(string);
+                res
             }
         }
     }
@@ -108,7 +108,7 @@ impl TreePath {
         let depth = self.get_depth();
 
         unsafe {
-            Vec::from_raw_buf(tmp as *const i32, depth as uint)
+            Vec::from_raw_buf(tmp as *const i32, depth as usize)
         }
     }
 

@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with rgtk.  If not, see <http://www.gnu.org/licenses/>.
 
-use std::c_str::ToCStr;
+use std::ffi::CString;
 use gtk::cast::{GTK_RECENT_CHOOSER};
 use gtk::{self, ffi};
 use gtk::ffi::FFIWidget;
@@ -126,7 +126,7 @@ pub trait RecentChooserTrait: gtk::WidgetTrait + FFIWidget {
         if tmp.is_null() {
             None
         } else {
-            Some(unsafe { String::from_raw_buf(tmp as *const u8) })
+            Some(unsafe { String::from_utf8(tmp as *const u8) })
         }
     }
 
@@ -141,9 +141,8 @@ pub trait RecentChooserTrait: gtk::WidgetTrait + FFIWidget {
     }
 
     fn unselect_uri(&self, uri: &str) -> bool {
-        match unsafe { uri.with_c_str(|c_str| {
-            ffi::gtk_recent_chooser_unselect_uri(GTK_RECENT_CHOOSER(self.get_widget()), c_str)
-        })} {
+        match unsafe { let c_str = CString::from_slice(uri.as_bytes());
+        ffi::gtk_recent_chooser_unselect_uri(GTK_RECENT_CHOOSER(self.get_widget()), c_str)} {
             ffi::GFALSE => false,
             _ => true
         }
@@ -167,7 +166,7 @@ pub trait RecentChooserTrait: gtk::WidgetTrait + FFIWidget {
             let mut tmp_vec : glib::List<Box<gtk::RecentInfo>> = glib::List::new();
 
             for it in old_list.iter() {
-                tmp_vec.append(box ffi::FFIWidget::wrap(*it as *mut gtk::ffi::C_GtkWidget));
+                tmp_vec.append(Box::new(ffi::FFIWidget::wrap)(*it as *mut gtk::ffi::C_GtkWidget));
             }
             tmp_vec
         }
@@ -180,10 +179,10 @@ pub trait RecentChooserTrait: gtk::WidgetTrait + FFIWidget {
         if tmp.is_null() {
             None
         } else {
-            let mut ret = Vec::with_capacity(length as uint);
+            let mut ret = Vec::with_capacity(length as usize);
 
             for count in range(0, length) {
-                ret.push(unsafe { String::from_raw_buf(*tmp.offset(count as int) as *const u8) });
+                ret.push(unsafe { String::from_utf8(*tmp.offset(count as isize) as *const u8) });
             }
             Some(ret)
         }
@@ -208,7 +207,7 @@ pub trait RecentChooserTrait: gtk::WidgetTrait + FFIWidget {
 
     //         for it in old_list.iter() {
     //             match gtk::RecentFilter::wrap(*it) {
-    //                 Some(r) => tmp_vec.append(box r),
+    //                 Some(r) => tmp_vec.append(Box::new(r)),
     //                 None => {}
     //             }
     //         }

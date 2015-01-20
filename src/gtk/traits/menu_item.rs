@@ -15,7 +15,7 @@
 
 //! The widget used for item in menus
 
-use std::c_str::ToCStr;
+use std::ffi::CString;
 use gtk::{self, ffi};
 use gtk::cast::GTK_MENU_ITEM;
 
@@ -54,30 +54,28 @@ pub trait MenuItemTrait: gtk::WidgetTrait + gtk::ContainerTrait + gtk::BinTrait 
 
     fn set_accel_path(&mut self, accel_path: &str) {
         unsafe {
-            accel_path.with_c_str(|c_str| {
-                ffi::gtk_menu_item_set_accel_path(GTK_MENU_ITEM(self.get_widget()), c_str)
-            })
+            let c_str = CString::from_slice(accel_path.as_bytes());
+            ffi::gtk_menu_item_set_accel_path(GTK_MENU_ITEM(self.get_widget()), c_str)
         }
     }
 
     fn get_accel_path(&self) -> String {
         unsafe {
-            String::from_raw_buf(ffi::gtk_menu_item_get_accel_path(GTK_MENU_ITEM(self.get_widget()))
+            String::from_utf8(ffi::gtk_menu_item_get_accel_path(GTK_MENU_ITEM(self.get_widget()))
                                          as *const u8)
         }
     }
 
     fn set_label(&mut self, label: &str) {
+        let c_str = CString::from_slice(label.as_bytes());
         unsafe {
-            label.with_c_str(|c_str| {
-                ffi::gtk_menu_item_set_label(GTK_MENU_ITEM(self.get_widget()), c_str)
-            })
+            ffi::gtk_menu_item_set_label(GTK_MENU_ITEM(self.get_widget()), c_str)
         }
     }
 
     fn get_label(&self) -> String {
         unsafe {
-            String::from_raw_buf(ffi::gtk_menu_item_get_label(GTK_MENU_ITEM(self.get_widget()))
+            String::from_utf8(ffi::gtk_menu_item_get_label(GTK_MENU_ITEM(self.get_widget()))
                                          as *const u8)
         }
     }
