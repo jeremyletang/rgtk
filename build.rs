@@ -19,7 +19,7 @@
 extern crate gcc;
 extern crate "pkg-config" as pkg_config;
 
-use std::io::process::Command;
+use std::old_io::process::Command;
 use std::path::Path;
 use std::os;
 use gcc::Config;
