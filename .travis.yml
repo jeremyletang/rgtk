@@ -15,6 +15,7 @@ script:
   - cd examples
   - cd basic && cargo build
   - cd ../cairotest && cargo build
+  - cd ../gtktest && cargo build
   - cd ../sync_widgets && cargo build
   - cd ../text_viewer && cargo build
   - cd ../..
