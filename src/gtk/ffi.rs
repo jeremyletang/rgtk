@@ -548,7 +548,7 @@ extern "C" {
     //=========================================================================
     pub fn gtk_window_new                      (wtype : gtk::WindowType) -> *mut C_GtkWidget;
     pub fn gtk_window_set_title                (window: *mut C_GtkWindow, title: *const c_char) -> ();
-    pub fn gtk_window_get_title                (window: *mut C_GtkWindow) -> *const c_char;
+    pub fn gtk_window_get_title                (window: *const C_GtkWindow) -> *const c_char;
     pub fn gtk_window_set_default_size         (widget: *mut C_GtkWidget, width: c_int, height: c_int);
     pub fn gtk_window_set_position             (window: *mut C_GtkWindow, position: gtk::WindowPosition) -> ();
     pub fn gtk_window_set_decorated            (window: *mut C_GtkWindow, setting: Gboolean) -> ();
@@ -1947,7 +1947,7 @@ extern "C" {
     pub fn gtk_toggle_button_set_mode          (toggle_button: *mut C_GtkToggleButton, draw_indicator: Gboolean) -> ();
     pub fn gtk_toggle_button_get_mode          (toggle_button: *mut C_GtkToggleButton) -> Gboolean;
     pub fn gtk_toggle_button_toggled           (toggle_button: *mut C_GtkToggleButton) -> ();
-    pub fn gtk_toggle_button_get_active        (toggle_button: *mut C_GtkToggleButton) -> Gboolean;
+    pub fn gtk_toggle_button_get_active        (toggle_button: *const C_GtkToggleButton) -> Gboolean;
     pub fn gtk_toggle_button_set_active        (toggle_button: *mut C_GtkToggleButton, is_active: Gboolean) -> ();
     pub fn gtk_toggle_button_get_inconsistent  (toggle_button: *mut C_GtkToggleButton) -> Gboolean;
     pub fn gtk_toggle_button_set_inconsistent  (toggle_button: *mut C_GtkToggleButton, setting: Gboolean) -> ();
@@ -3592,3 +3592,124 @@ extern "C" {
     pub fn cast_GtkSocket(widget: *mut C_GtkWidget) -> *mut C_GtkSocket;
     pub fn cast_GtkEventBox(widget: *mut C_GtkWidget) -> *mut C_GtkEventBox;
 }
+
+use glib::ffi::{C_GObject, g_type_check_instance_is_a};
+use glib::traits::{GetGType, Cast, MutCast, Downcast, MutDowncast};
+
+macro_rules! upcast_impl {
+    ($ty:ty, $sup:ty) => (
+        impl Cast<$sup> for *const $ty {
+            fn cast(&self) -> *const $sup {
+                unsafe {
+                    debug_assert!(to_bool(g_type_check_instance_is_a(
+                            *self as *const _, <$ty as GetGType>::get_gtype())));
+                }
+                *self as *const $sup
+            }
+        }
+
+        impl MutCast<$sup> for *mut $ty {
+            fn cast(&self) -> *mut $sup {
+                unsafe {
+                    debug_assert!(to_bool(g_type_check_instance_is_a(
+                            *self as *const _, <$ty as GetGType>::get_gtype())));
+                }
+                *self as *mut $sup
+            }
+        }
+    )
+}
+
+macro_rules! downcast_impl {
+    ($ty:ty, $sup:ty) => (
+        impl Downcast<$ty> for *const $sup {
+            fn try_downcast(&self) -> Option<*const $ty> {
+                unsafe {
+                    if to_bool(g_type_check_instance_is_a(
+                            *self as *const _,
+                            <$ty as GetGType>::get_gtype())) {
+                        Some(*self as *const $ty)
+                    }
+                    else {
+                        None
+                    }
+                }
+            }
+
+            unsafe fn force_downcast(&self) -> *const $ty {
+                debug_assert!(to_bool(g_type_check_instance_is_a(
+                        *self as *const _, <$ty as GetGType>::get_gtype())));
+                *self as *const $ty
+            }
+        }
+
+        impl MutDowncast<$ty> for *mut $sup {
+            fn try_downcast(&self) -> Option<*mut $ty> {
+                unsafe {
+                    if to_bool(g_type_check_instance_is_a(
+                            *self as *const _,
+                            <$ty as GetGType>::get_gtype())) {
+                        Some(*self as *mut $ty)
+                    }
+                    else {
+                        None
+                    }
+                }
+            }
+
+            unsafe fn force_downcast(&self) -> *mut $ty {
+                debug_assert!(to_bool(g_type_check_instance_is_a(
+                        *self as *const _, <$ty as GetGType>::get_gtype())));
+                *self as *mut $ty
+            }
+        }
+    )
+}
+
+macro_rules! cast_impl {
+    ($ty:ty, $sup:ty, $($supsup:ty),*) => (
+        upcast_impl!($ty, $sup);
+        $(
+            upcast_impl!($ty, $supsup);
+        )*
+        downcast_impl!($ty, $sup);
+        $(
+            downcast_impl!($ty, $supsup);
+        )*
+    )
+}
+
+cast_impl!(C_GtkWidget, C_GObject, );
+cast_impl!(C_GtkContainer, C_GtkWidget, C_GObject);
+cast_impl!(C_GtkBin, C_GtkContainer, C_GtkWidget, C_GObject);
+cast_impl!(C_GtkButton, C_GtkBin, C_GtkContainer, C_GtkWidget, C_GObject);
+cast_impl!(C_GtkToggleButton, C_GtkButton, C_GtkBin, C_GtkContainer, C_GtkWidget, C_GObject);
+cast_impl!(C_GtkCheckButton, C_GtkToggleButton, C_GtkButton, C_GtkBin, C_GtkContainer, C_GtkWidget, C_GObject);
+cast_impl!(C_GtkBox, C_GtkContainer, C_GtkWidget, C_GObject);
+cast_impl!(C_GtkWindow, C_GtkBin, C_GtkContainer, C_GtkWidget, C_GObject);
+
+macro_rules! gen_gtype {
+    ($ty:ty, $func:ident) => (
+        extern "C" {
+            fn $func() -> GType;
+        }
+
+        impl GetGType for $ty {
+            fn get_gtype() -> GType {
+                unsafe {
+                    $func()
+                }
+            }
+        }
+    )
+}
+
+gen_gtype!(C_GtkWidget, gtk_widget_get_type);
+gen_gtype!(C_GtkContainer, gtk_container_get_type);
+gen_gtype!(C_GtkBin, gtk_bin_get_type);
+gen_gtype!(C_GtkBox, gtk_box_get_type);
+gen_gtype!(C_GtkButton, gtk_button_get_type);
+gen_gtype!(C_GtkToggleButton, gtk_toggle_button_get_type);
+gen_gtype!(C_GtkCheckButton, gtk_check_button_get_type);
+gen_gtype!(C_GtkWindow, gtk_window_get_type);
+

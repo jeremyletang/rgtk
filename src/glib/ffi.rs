@@ -56,6 +56,14 @@ pub struct C_GPermission;
 #[derive(Copy)]
 pub struct C_GObject;
 
+#[repr(C)]
+#[derive(Copy)]
+pub enum GConnectFlags {
+    None = 0,
+    ConnectAfter = 1 << 0,
+    ConnectSwapped = 1 << 1,
+}
+
 extern "C" {
 
     //=========================================================================
@@ -157,12 +165,23 @@ extern "C" {
     // GObject
     //=========================================================================
     pub fn g_object_ref(object: *mut C_GObject) -> *mut C_GObject;
+    pub fn g_object_ref_sink(object: *mut C_GObject) -> *mut C_GObject;
     pub fn g_object_unref(object: *mut C_GObject);
+    pub fn g_object_get_type() -> GType;
 
     pub fn glue_signal_connect(g_object: *mut C_GObject,
                                signal: *const c_char,
                                func: Option<extern "C" fn()>,
                                user_data: *const c_void);
+
+    pub fn g_signal_connect_data(g_object: *mut C_GObject,
+                                 signal: *const c_char,
+                                 func: Option<extern "C" fn()>,
+                                 user_data: *const c_void,
+                                 destroy_data: *const c_void,
+                                 connect_flags: GConnectFlags);
+
+    pub fn g_type_check_instance_is_a(type_instance: *const c_void, iface_type: GType) -> Gboolean;
 
     //=========================================================================
     // GType constants

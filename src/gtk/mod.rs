@@ -342,5 +342,13 @@ pub mod signals;
 pub mod widgets;
 pub mod types;
 
+pub mod widget;
+pub mod container;
+pub mod box_;
+pub mod button;
+pub mod toggle_button;
+pub mod check_button;
+pub mod window;
+
 #[doc(hidden)]
 pub mod ffi;

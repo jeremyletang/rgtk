@@ -218,3 +218,39 @@ macro_rules! impl_range_events(
     // ChangeValue
     )
 );
+
+macro_rules! struct_skel {
+    ($name:ident, $inner:ty) => (
+        pub struct $name {
+            ptr: *mut $inner,
+        }
+
+        impl AsPtr for $name {
+            type Inner = $inner;
+
+            fn as_mut_ptr(&mut self) -> *mut $inner {
+                self.ptr
+            }
+
+            fn as_ptr(&self) -> *const $inner {
+                self.ptr as *const _
+            }
+        }
+
+        impl FromPtr for $name {
+            type Inner = $inner;
+
+            fn from_ptr(ptr: *mut $inner) -> $name {
+                let mut res = $name { ptr: ptr };
+                res.ref_();
+                res
+            }
+        }
+
+        impl Drop for $name {
+            fn drop(&mut self) {
+                self.unref();
+            }
+        }
+    )
+}
