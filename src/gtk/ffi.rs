@@ -548,7 +548,7 @@ extern "C" {
     //=========================================================================
     pub fn gtk_window_new                      (wtype : gtk::WindowType) -> *mut C_GtkWidget;
     pub fn gtk_window_set_title                (window: *mut C_GtkWindow, title: *const c_char) -> ();
-    pub fn gtk_window_get_title                (window: *const C_GtkWindow) -> *const c_char;
+    pub fn gtk_window_get_title                (window: *mut C_GtkWindow) -> *const c_char;
     pub fn gtk_window_set_default_size         (widget: *mut C_GtkWidget, width: c_int, height: c_int);
     pub fn gtk_window_set_position             (window: *mut C_GtkWindow, position: gtk::WindowPosition) -> ();
     pub fn gtk_window_set_decorated            (window: *mut C_GtkWindow, setting: Gboolean) -> ();
@@ -1947,7 +1947,7 @@ extern "C" {
     pub fn gtk_toggle_button_set_mode          (toggle_button: *mut C_GtkToggleButton, draw_indicator: Gboolean) -> ();
     pub fn gtk_toggle_button_get_mode          (toggle_button: *mut C_GtkToggleButton) -> Gboolean;
     pub fn gtk_toggle_button_toggled           (toggle_button: *mut C_GtkToggleButton) -> ();
-    pub fn gtk_toggle_button_get_active        (toggle_button: *const C_GtkToggleButton) -> Gboolean;
+    pub fn gtk_toggle_button_get_active        (toggle_button: *mut C_GtkToggleButton) -> Gboolean;
     pub fn gtk_toggle_button_set_active        (toggle_button: *mut C_GtkToggleButton, is_active: Gboolean) -> ();
     pub fn gtk_toggle_button_get_inconsistent  (toggle_button: *mut C_GtkToggleButton) -> Gboolean;
     pub fn gtk_toggle_button_set_inconsistent  (toggle_button: *mut C_GtkToggleButton, setting: Gboolean) -> ();
@@ -3594,11 +3594,11 @@ extern "C" {
 }
 
 use glib::ffi::{C_GObject, g_type_check_instance_is_a};
-use glib::traits::{GetGType, MutCast, MutDowncast};
+use glib::traits::{GetGType, Cast, Downcast};
 
 macro_rules! upcast_impl {
     ($ty:ty, $sup:ty) => (
-        impl MutCast<$sup> for *mut $ty {
+        impl Cast<$sup> for *mut $ty {
             fn cast(&self) -> *mut $sup {
                 unsafe {
                     debug_assert!(to_bool(g_type_check_instance_is_a(
@@ -3612,7 +3612,7 @@ macro_rules! upcast_impl {
 
 macro_rules! downcast_impl {
     ($ty:ty, $sup:ty) => (
-        impl MutDowncast<$ty> for *mut $sup {
+        impl Downcast<$ty> for *mut $sup {
             fn try_downcast(&self) -> Option<*mut $ty> {
                 unsafe {
                     if to_bool(g_type_check_instance_is_a(

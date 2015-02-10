@@ -228,12 +228,8 @@ macro_rules! struct_skel {
         impl AsPtr for $name {
             type Inner = $inner;
 
-            fn as_mut_ptr(&mut self) -> *mut $inner {
+            fn as_ptr(&self) -> *mut $inner {
                 self.ptr
-            }
-
-            fn as_ptr(&self) -> *const $inner {
-                self.ptr as *const _
             }
         }
 
@@ -241,9 +237,15 @@ macro_rules! struct_skel {
             type Inner = $inner;
 
             fn from_ptr(ptr: *mut $inner) -> $name {
-                let mut res = $name { ptr: ptr };
+                let res = $name { ptr: ptr };
                 res.ref_();
                 res
+            }
+        }
+
+        impl Clone for $name {
+            fn clone(&self) -> $name {
+                FromPtr::from_ptr(self.as_ptr())
             }
         }
 

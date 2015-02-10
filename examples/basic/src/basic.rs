@@ -20,28 +20,28 @@ use rgtk::gtk::window::{WindowTrait, Window};
 fn main() {
     gtk::init();
 
-    let mut window = Window::new(gtk::WindowType::TopLevel);
+    let window = Window::new(gtk::WindowType::TopLevel);
 
     window.set_title("First GTK+ Program");
     window.set_border_width(10);
     window.set_window_position(gtk::WindowPosition::Center);
     window.set_default_size(350, 70);
 
-    Connect_::connect(&mut window, DeleteEvent::new(&mut |_| {
+    Connect_::connect(&window, DeleteEvent::new(&mut |_| {
         gtk::main_quit();
         true
     }));
 
-    let mut bx = Box_::new(gtk::Orientation::Vertical, 10);
-    let mut cb = CheckButton::new_with_label("Exit");
-    let mut button = Button::new_with_label("Click me!");
+    let bx = Box_::new(gtk::Orientation::Vertical, 10);
+    let cb = CheckButton::new_with_label("Exit");
+    let button = Button::new_with_label("Click me!");
 
-    bx.add(&mut cb);
-    bx.add(&mut button);
+    bx.add(&cb);
+    bx.add(&button);
 
-    window.add(&mut bx);
+    window.add(&bx);
 
-    Connect_::connect(&mut button, Clicked::new(&mut || {
+    Connect_::connect(&button, Clicked::new(&mut || {
         if cb.get_active() {
             gtk::main_quit();
         }

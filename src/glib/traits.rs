@@ -24,22 +24,11 @@ pub trait FFIGObject {
 
 pub use glib::ffi::{GType, C_GObject};
 
-pub trait MutCast<T> {
+pub trait Cast<T> {
     fn cast(&self) -> *mut T;
 }
 
-pub trait Cast<T> {
-    fn cast(&self) -> *const T;
-}
-
-impl <T, X> Cast<T> for *const X
-where *mut X: MutCast<T> {
-    fn cast(&self) -> *const T {
-        (*self as *mut X).cast()
-    }
-}
-
-pub trait MutDowncast<T> {
+pub trait Downcast<T> {
     fn try_downcast(&self) -> Option<*mut T>;
     unsafe fn force_downcast(&self) -> *mut T;
 
@@ -48,35 +37,9 @@ pub trait MutDowncast<T> {
     }
 }
 
-pub trait Downcast<T> {
-    fn try_downcast(&self) -> Option<*const T>;
-    unsafe fn force_downcast(&self) -> *const T;
-
-    fn downcast(&self) -> *const T {
-        self.try_downcast().unwrap()
-    }
-}
-
-impl <T, X> Downcast<T> for *const X
-where *mut X: MutDowncast<T> {
-    fn try_downcast(&self) -> Option<*const T> {
-        if let Some(ptr) = (*self as *mut X).try_downcast() {
-            Some(ptr as *const _)
-        }
-        else {
-            None
-        }
-    }
-
-    unsafe fn force_downcast(&self) -> *const T {
-        (*self as *mut X).force_downcast()
-    }
-}
-
 pub trait AsPtr {
     type Inner;
-    fn as_mut_ptr(&mut self) -> *mut Self::Inner;
-    fn as_ptr(&self) -> *const Self::Inner;
+    fn as_ptr(&self) -> *mut Self::Inner;
 }
 
 pub trait FromPtr {
@@ -85,8 +48,8 @@ pub trait FromPtr {
 }
 
 pub trait ObjectTrait: AsPtr {
-    fn ref_(&mut self);
-    fn unref(&mut self);
+    fn ref_(&self);
+    fn unref(&self);
 }
 
 pub trait GetGType {
@@ -102,27 +65,27 @@ impl GetGType for C_GObject {
 }
 
 pub trait Connect_ {
-    fn connect<'a, S: Signal<'a>>(&mut self, signal: Box<S>);
+    fn connect<'a, S: Signal<'a>>(&self, signal: Box<S>);
 }
 
 impl <T> ObjectTrait for T
 where T: AsPtr,
       <T as AsPtr>::Inner: GetGType,
-      *mut <T as AsPtr>::Inner: MutCast<C_GObject> {
-    fn ref_(&mut self) {
+      *mut <T as AsPtr>::Inner: Cast<C_GObject> {
+    fn ref_(&self) {
         unsafe {
-            ffi::g_object_ref_sink(self.as_mut_ptr().cast());
+            ffi::g_object_ref_sink(self.as_ptr().cast());
         }
     }
 
-    fn unref(&mut self) {
+    fn unref(&self) {
         unsafe {
-            ffi::g_object_unref(self.as_mut_ptr().cast());
+            ffi::g_object_unref(self.as_ptr().cast());
         }
     }
 }
 
-impl <T> MutCast<T> for *mut T {
+impl <T> Cast<T> for *mut T {
     fn cast(&self) -> *mut T {
         *self as *mut T
     }
@@ -131,8 +94,8 @@ impl <T> MutCast<T> for *mut T {
 impl <T> Connect_ for T
 where T: AsPtr,
       <T as AsPtr>::Inner: GetGType,
-      *mut <T as AsPtr>::Inner: MutCast<C_GObject> {
-    fn connect<'a, S: Signal<'a>>(&mut self, signal: Box<S>) {
+      *mut <T as AsPtr>::Inner: Cast<C_GObject> {
+    fn connect<'a, S: Signal<'a>>(&self, signal: Box<S>) {
         use std::mem::transmute;
 
         let signal = signal as Box<Signal<'a>>;
@@ -146,7 +109,7 @@ where T: AsPtr,
             let c_str = CString::from_slice(signal_name.replace("_", "-").as_bytes());
 
             ffi::g_signal_connect_data(
-                self.as_mut_ptr().cast(),
+                self.as_ptr().cast(),
                 c_str.as_ptr(),
                 Some(trampoline),
                 user_data_ptr,
