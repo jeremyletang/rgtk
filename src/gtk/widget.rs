@@ -8,8 +8,7 @@ pub trait WidgetTrait: ObjectTrait {
 impl <T> WidgetTrait for T
 where T: AsPtr,
       <T as AsPtr>::Inner: GetGType,
-      *mut <T as AsPtr>::Inner: MutCast<ffi::C_GtkWidget>  + MutCast<::glib::ffi::C_GObject>,
-      *const <T as AsPtr>::Inner: Cast<ffi::C_GtkWidget>  + Cast<::glib::ffi::C_GObject> {
+      *mut <T as AsPtr>::Inner: MutCast<ffi::C_GtkWidget>  + MutCast<::glib::ffi::C_GObject> {
 
     fn show_all(&mut self) {
         unsafe {

@@ -14,8 +14,7 @@ pub trait WindowTrait: ContainerTrait {
 impl <T> WindowTrait for T
 where T: AsPtr,
       <T as AsPtr>::Inner: GetGType,
-      *mut <T as AsPtr>::Inner: MutCast<ffi::C_GtkWindow>  + MutCast<ffi::C_GtkContainer> + MutCast<ffi::C_GtkWidget>  + MutCast<::glib::ffi::C_GObject>,
-      *const <T as AsPtr>::Inner: Cast<ffi::C_GtkWindow>  + Cast<ffi::C_GtkContainer> + Cast<ffi::C_GtkWidget>  + Cast<::glib::ffi::C_GObject> {
+      *mut <T as AsPtr>::Inner: MutCast<ffi::C_GtkWindow>  + MutCast<ffi::C_GtkContainer> + MutCast<ffi::C_GtkWidget>  + MutCast<::glib::ffi::C_GObject> {
 
     fn set_default_size(&mut self, width: i32, height: i32) {
         unsafe {

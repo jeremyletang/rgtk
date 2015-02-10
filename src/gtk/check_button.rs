@@ -1,5 +1,5 @@
 use std::ffi::CString;
-use glib::traits::{Cast, MutCast, Downcast, MutDowncast, AsPtr, FromPtr, ObjectTrait, GetGType};
+use glib::traits::{MutCast, Downcast, MutDowncast, AsPtr, FromPtr, ObjectTrait, GetGType};
 use gtk::ffi;
 use super::toggle_button::ToggleButtonTrait;
 
@@ -9,8 +9,7 @@ pub trait CheckButtonTrait: ToggleButtonTrait {
 impl <T> CheckButtonTrait for T
 where T: AsPtr,
       <T as AsPtr>::Inner: GetGType,
-      *mut <T as AsPtr>::Inner: MutCast<ffi::C_GtkCheckButton>  + MutCast<ffi::C_GtkToggleButton>  + MutCast<ffi::C_GtkButton>  + MutCast<ffi::C_GtkContainer> + MutCast<ffi::C_GtkWidget>  + MutCast<::glib::ffi::C_GObject>,
-      *const <T as AsPtr>::Inner: Cast<ffi::C_GtkCheckButton>  + Cast<ffi::C_GtkToggleButton>  + Cast<ffi::C_GtkButton>  + Cast<ffi::C_GtkContainer> + Cast<ffi::C_GtkWidget>  + Cast<::glib::ffi::C_GObject> {
+      *mut <T as AsPtr>::Inner: MutCast<ffi::C_GtkCheckButton>  + MutCast<ffi::C_GtkToggleButton>  + MutCast<ffi::C_GtkButton>  + MutCast<ffi::C_GtkContainer> + MutCast<ffi::C_GtkWidget>  + MutCast<::glib::ffi::C_GObject> {
 
 }
 

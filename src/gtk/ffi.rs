@@ -3594,20 +3594,10 @@ extern "C" {
 }
 
 use glib::ffi::{C_GObject, g_type_check_instance_is_a};
-use glib::traits::{GetGType, Cast, MutCast, Downcast, MutDowncast};
+use glib::traits::{GetGType, MutCast, MutDowncast};
 
 macro_rules! upcast_impl {
     ($ty:ty, $sup:ty) => (
-        impl Cast<$sup> for *const $ty {
-            fn cast(&self) -> *const $sup {
-                unsafe {
-                    debug_assert!(to_bool(g_type_check_instance_is_a(
-                            *self as *const _, <$ty as GetGType>::get_gtype())));
-                }
-                *self as *const $sup
-            }
-        }
-
         impl MutCast<$sup> for *mut $ty {
             fn cast(&self) -> *mut $sup {
                 unsafe {
@@ -3622,27 +3612,6 @@ macro_rules! upcast_impl {
 
 macro_rules! downcast_impl {
     ($ty:ty, $sup:ty) => (
-        impl Downcast<$ty> for *const $sup {
-            fn try_downcast(&self) -> Option<*const $ty> {
-                unsafe {
-                    if to_bool(g_type_check_instance_is_a(
-                            *self as *const _,
-                            <$ty as GetGType>::get_gtype())) {
-                        Some(*self as *const $ty)
-                    }
-                    else {
-                        None
-                    }
-                }
-            }
-
-            unsafe fn force_downcast(&self) -> *const $ty {
-                debug_assert!(to_bool(g_type_check_instance_is_a(
-                        *self as *const _, <$ty as GetGType>::get_gtype())));
-                *self as *const $ty
-            }
-        }
-
         impl MutDowncast<$ty> for *mut $sup {
             fn try_downcast(&self) -> Option<*mut $ty> {
                 unsafe {

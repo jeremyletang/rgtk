@@ -32,6 +32,13 @@ pub trait Cast<T> {
     fn cast(&self) -> *const T;
 }
 
+impl <T, X> Cast<T> for *const X
+where *mut X: MutCast<T> {
+    fn cast(&self) -> *const T {
+        (*self as *mut X).cast()
+    }
+}
+
 pub trait MutDowncast<T> {
     fn try_downcast(&self) -> Option<*mut T>;
     unsafe fn force_downcast(&self) -> *mut T;
@@ -47,6 +54,22 @@ pub trait Downcast<T> {
 
     fn downcast(&self) -> *const T {
         self.try_downcast().unwrap()
+    }
+}
+
+impl <T, X> Downcast<T> for *const X
+where *mut X: MutDowncast<T> {
+    fn try_downcast(&self) -> Option<*const T> {
+        if let Some(ptr) = (*self as *mut X).try_downcast() {
+            Some(ptr as *const _)
+        }
+        else {
+            None
+        }
+    }
+
+    unsafe fn force_downcast(&self) -> *const T {
+        (*self as *mut X).force_downcast()
     }
 }
 
@@ -85,8 +108,7 @@ pub trait Connect_ {
 impl <T> ObjectTrait for T
 where T: AsPtr,
       <T as AsPtr>::Inner: GetGType,
-      *mut <T as AsPtr>::Inner: MutCast<C_GObject>,
-      *const <T as AsPtr>::Inner: Cast<C_GObject> {
+      *mut <T as AsPtr>::Inner: MutCast<C_GObject> {
     fn ref_(&mut self) {
         unsafe {
             ffi::g_object_ref_sink(self.as_mut_ptr().cast());
@@ -106,17 +128,10 @@ impl <T> MutCast<T> for *mut T {
     }
 }
 
-impl <T> Cast<T> for *const T {
-    fn cast(&self) -> *const T {
-        *self as *const T
-    }
-}
-
 impl <T> Connect_ for T
 where T: AsPtr,
       <T as AsPtr>::Inner: GetGType,
-      *mut <T as AsPtr>::Inner: MutCast<C_GObject>,
-      *const <T as AsPtr>::Inner: Cast<C_GObject> {
+      *mut <T as AsPtr>::Inner: MutCast<C_GObject> {
     fn connect<'a, S: Signal<'a>>(&mut self, signal: Box<S>) {
         use std::mem::transmute;
 
