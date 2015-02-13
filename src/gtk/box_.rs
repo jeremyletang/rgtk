@@ -1,27 +1,21 @@
 use libc::c_int;
-use glib::traits::{Cast, Downcast, AsPtr, FromPtr, ObjectTrait, GetGType};
+use glib::traits::{Cast, Downcast, AsPtr, FromPtr, Envelope};
 use gtk::ffi;
 use gtk::Orientation;
-use super::container::ContainerTrait;
 
-pub trait BoxTrait: ContainerTrait {
-}
+pub trait BoxTrait { }
 
 impl <T> BoxTrait for T
-where T: AsPtr,
-      <T as AsPtr>::Inner: GetGType,
-      *mut <T as AsPtr>::Inner: Cast<ffi::C_GtkBox>  + Cast<ffi::C_GtkContainer> + Cast<ffi::C_GtkWidget>  + Cast<::glib::ffi::C_GObject> {
+where T: AsPtr, *mut <T as AsPtr>::Inner: Cast<ffi::C_GtkBox>
+{ }
 
-}
-
-struct_skel!(Box_, ffi::C_GtkBox);
+pub struct Box_;
 
 impl Box_ {
-    pub fn new(orientation: Orientation, spacing: i32) -> Box_ {
+    pub fn new(orientation: Orientation, spacing: i32) -> Envelope<ffi::C_GtkBox> {
         unsafe {
-            FromPtr::from_ptr(
-                ffi::gtk_box_new(orientation, spacing as c_int).force_downcast())
+            FromPtr::from_floating_ptr(
+                ffi::gtk_box_new(orientation, spacing as c_int).unchecked_downcast())
         }
     }
 }
-

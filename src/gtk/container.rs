@@ -1,19 +1,15 @@
 use libc::c_uint;
-use glib::traits::{AsPtr, Cast, GetGType};
+use glib::traits::{AsPtr, Cast};
 use gtk::ffi;
-use super::widget::WidgetTrait;
 
-pub trait ContainerTrait: WidgetTrait {
+pub trait ContainerTrait {
     fn add<W>(&self, widget: &W)
         where W: AsPtr, *mut <W as AsPtr>::Inner: Cast<ffi::C_GtkWidget>;
     fn set_border_width(&self, border_width: u32);
 }
 
 impl <T> ContainerTrait for T
-where T: AsPtr,
-      <T as AsPtr>::Inner: GetGType,
-      *mut <T as AsPtr>::Inner: Cast<ffi::C_GtkContainer> + Cast<ffi::C_GtkWidget>  + Cast<::glib::ffi::C_GObject> {
-
+where T: AsPtr, *mut <T as AsPtr>::Inner: Cast<ffi::C_GtkContainer> {
     fn add<W>(&self, widget: &W)
     where W: AsPtr, *mut <W as AsPtr>::Inner: Cast<ffi::C_GtkWidget> {
         unsafe {

@@ -30,7 +30,7 @@ pub trait Cast<T> {
 
 pub trait Downcast<T> {
     fn try_downcast(&self) -> Option<*mut T>;
-    unsafe fn force_downcast(&self) -> *mut T;
+    unsafe fn unchecked_downcast(&self) -> *mut T;
 
     fn downcast(&self) -> *mut T {
         self.try_downcast().unwrap()
@@ -44,11 +44,14 @@ pub trait AsPtr {
 
 pub trait FromPtr {
     type Inner;
-    fn from_ptr(ptr: *mut Self::Inner) -> Self;
+    fn from_borrowed_ptr(ptr: *mut Self::Inner) -> Self;
+    fn from_owned_ptr(ptr: *mut Self::Inner) -> Self;
+    fn from_floating_ptr(ptr: *mut Self::Inner) -> Self;
 }
 
 pub trait ObjectTrait: AsPtr {
     fn ref_(&self);
+    fn ref_sink(&self);
     fn unref(&self);
 }
 
@@ -64,6 +67,55 @@ impl GetGType for C_GObject {
     }
 }
 
+pub struct Envelope<T> {
+    ptr: *mut T,
+}
+
+impl <T> AsPtr for Envelope<T> {
+    type Inner = T;
+
+    fn as_ptr(&self) -> *mut T {
+        self.ptr
+    }
+}
+
+impl <T> FromPtr for Envelope<T>
+where T: GetGType, *mut T: Cast<C_GObject> {
+    type Inner = T;
+
+    fn from_borrowed_ptr(ptr: *mut T) -> Envelope<T> {
+        let res = Envelope { ptr: ptr };
+        res.ref_();
+        res
+    }
+
+    fn from_owned_ptr(ptr: *mut T) -> Envelope<T> {
+        Envelope { ptr: ptr }
+    }
+
+    fn from_floating_ptr(ptr: *mut T) -> Envelope<T> {
+        let res = Envelope { ptr: ptr };
+        res.ref_sink();
+        res
+    }
+
+}
+
+impl <T> Clone for Envelope<T>
+where T: GetGType, *mut T: Cast<C_GObject> {
+    fn clone(&self) -> Envelope<T> {
+        FromPtr::from_borrowed_ptr(self.as_ptr())
+    }
+}
+
+#[unsafe_destructor]
+impl <T> Drop for Envelope<T>
+where T: GetGType, *mut T: Cast<C_GObject> {
+    fn drop(&mut self) {
+        self.unref();
+    }
+}
+
 pub trait Connect_ {
     fn connect<'a, S: Signal<'a>>(&self, signal: Box<S>);
 }
@@ -73,6 +125,12 @@ where T: AsPtr,
       <T as AsPtr>::Inner: GetGType,
       *mut <T as AsPtr>::Inner: Cast<C_GObject> {
     fn ref_(&self) {
+        unsafe {
+            ffi::g_object_ref(self.as_ptr().cast());
+        }
+    }
+
+    fn ref_sink(&self) {
         unsafe {
             ffi::g_object_ref_sink(self.as_ptr().cast());
         }

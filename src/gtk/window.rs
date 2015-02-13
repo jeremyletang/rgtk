@@ -1,10 +1,9 @@
 use std::ffi::CString;
-use glib::traits::{Cast, Downcast, AsPtr, FromPtr, ObjectTrait, GetGType};
+use glib::traits::{Cast, Downcast, AsPtr, FromPtr, Envelope};
 use gtk::ffi;
-use super::container::ContainerTrait;
 use gtk::{WindowPosition, WindowType};
 
-pub trait WindowTrait: ContainerTrait {
+pub trait WindowTrait {
     fn set_default_size(&self, width: i32, height: i32);
     fn set_title(&self, title: &str);
     fn set_window_position(&self, window_position: WindowPosition);
@@ -12,10 +11,7 @@ pub trait WindowTrait: ContainerTrait {
 }
 
 impl <T> WindowTrait for T
-where T: AsPtr,
-      <T as AsPtr>::Inner: GetGType,
-      *mut <T as AsPtr>::Inner: Cast<ffi::C_GtkWindow>  + Cast<ffi::C_GtkContainer> + Cast<ffi::C_GtkWidget>  + Cast<::glib::ffi::C_GObject> {
-
+where T: AsPtr, *mut <T as AsPtr>::Inner: Cast<ffi::C_GtkWindow> {
     fn set_default_size(&self, width: i32, height: i32) {
         unsafe {
             ffi::gtk_window_set_default_size(self.as_ptr().cast(), width, height)
@@ -48,13 +44,13 @@ where T: AsPtr,
     }
 }
 
-struct_skel!(Window, ffi::C_GtkWindow);
+pub struct Window;
 
 impl Window {
-    pub fn new(window_type: WindowType) -> Window {
+    pub fn new(window_type: WindowType) -> Envelope<ffi::C_GtkWindow> {
         unsafe {
-            FromPtr::from_ptr(
-                ffi::gtk_window_new(window_type).force_downcast())
+            FromPtr::from_floating_ptr(
+                ffi::gtk_window_new(window_type).unchecked_downcast())
         }
     }
 }

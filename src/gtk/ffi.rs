@@ -549,7 +549,7 @@ extern "C" {
     pub fn gtk_window_new                      (wtype : gtk::WindowType) -> *mut C_GtkWidget;
     pub fn gtk_window_set_title                (window: *mut C_GtkWindow, title: *const c_char) -> ();
     pub fn gtk_window_get_title                (window: *mut C_GtkWindow) -> *const c_char;
-    pub fn gtk_window_set_default_size         (widget: *mut C_GtkWidget, width: c_int, height: c_int);
+    pub fn gtk_window_set_default_size         (widget: *mut C_GtkWindow, width: c_int, height: c_int);
     pub fn gtk_window_set_position             (window: *mut C_GtkWindow, position: gtk::WindowPosition) -> ();
     pub fn gtk_window_set_decorated            (window: *mut C_GtkWindow, setting: Gboolean) -> ();
     pub fn gtk_window_set_titlebar             (window: *mut C_GtkWindow, titlebar: *mut C_GtkWidget) -> ();
@@ -3626,7 +3626,7 @@ macro_rules! downcast_impl {
                 }
             }
 
-            unsafe fn force_downcast(&self) -> *mut $ty {
+            unsafe fn unchecked_downcast(&self) -> *mut $ty {
                 debug_assert!(to_bool(g_type_check_instance_is_a(
                         *self as *const _, <$ty as GetGType>::get_gtype())));
                 *self as *mut $ty
