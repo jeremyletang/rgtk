@@ -6,27 +6,46 @@
 
 extern crate rgtk;
 
-use rgtk::*;
-use rgtk::gtk::signals::{DeleteEvent};
+use rgtk::glib::traits::Connect_;
+use rgtk::gtk;
+use rgtk::gtk::signals::{DeleteEvent, Clicked};
+use rgtk::gtk::widget::WidgetTrait;
+use rgtk::gtk::container::ContainerTrait;
+use rgtk::gtk::box_::{Box_};
+use rgtk::gtk::button::{Button};
+use rgtk::gtk::toggle_button::{ToggleButtonTrait};
+use rgtk::gtk::check_button::{CheckButton};
+use rgtk::gtk::window::{WindowTrait, Window};
 
 fn main() {
     gtk::init();
 
-    let mut window = gtk::Window::new(gtk::WindowType::TopLevel).unwrap();
+    let window = Window::new(gtk::WindowType::TopLevel);
 
     window.set_title("First GTK+ Program");
     window.set_border_width(10);
     window.set_window_position(gtk::WindowPosition::Center);
     window.set_default_size(350, 70);
 
-    Connect::connect(&window, DeleteEvent::new(&mut |_| {
+    Connect_::connect(&window, DeleteEvent::new(&mut |_| {
         gtk::main_quit();
         true
     }));
 
-    let button = gtk::Button::new_with_label("Click me!").unwrap();
+    let bx = Box_::new(gtk::Orientation::Vertical, 10);
+    let cb = CheckButton::new_with_label("Exit");
+    let button = Button::new_with_label("Click me!");
 
-    window.add(&button);
+    bx.add(&cb);
+    bx.add(&button);
+
+    window.add(&bx);
+
+    Connect_::connect(&button, Clicked::new(&mut || {
+        if cb.get_active() {
+            gtk::main_quit();
+        }
+    }));
 
     window.show_all();
     gtk::main();
