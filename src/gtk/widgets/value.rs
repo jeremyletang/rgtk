@@ -15,11 +15,11 @@
 
 //! Generic values — A polymorphic type that can hold values of any other type
 
+use libc::{self, c_char, c_void};
+use glib::{to_bool, to_gboolean, GType};
 use gtk::ffi;
 use std::ffi::CString;
-use libc::{self, c_char, c_void};
-use glib::{to_bool, to_gboolean};
-use glib_ffi::{self};
+use std::num::FromPrimitive;
 
 trait GValuePrivate {
     fn get(gvalue: &GValue) -> Self;
@@ -46,8 +46,8 @@ impl GValue {
         }
     }
 
-    pub fn init(&self, _type: glib_ffi::GType) {
-        unsafe { ffi::g_value_init(self.pointer, _type) }
+    pub fn init(&self, _type: GType) {
+        unsafe { ffi::g_value_init(self.pointer, _type as ::glib_ffi::GType) }
     }
 
     pub fn reset(&self) {
@@ -158,23 +158,23 @@ impl GValue {
     }
 
     // FIXME shouldn't be like that
-    pub fn set_enum(&self, v_enum: glib_ffi::GType) {
-        unsafe { ffi::g_value_set_enum(self.pointer, v_enum) }
+    pub fn set_enum(&self, v_enum: GType) {
+        unsafe { ffi::g_value_set_enum(self.pointer, v_enum as ::glib_ffi::GType) }
     }
 
     // FIXME shouldn't be like that
-    pub fn get_enum(&self) -> glib_ffi::GType {
-        unsafe { ffi::g_value_get_enum(self.pointer) }
+    pub fn get_enum(&self) -> GType {
+        unsafe { FromPrimitive::from_u64(ffi::g_value_get_enum(self.pointer)).unwrap() }
     }
 
     // FIXME shouldn't be like that
-    pub fn set_flags(&self, v_flags: glib_ffi::GType) {
-        unsafe { ffi::g_value_set_flags(self.pointer, v_flags) }
+    pub fn set_flags(&self, v_flags: GType) {
+        unsafe { ffi::g_value_set_flags(self.pointer, v_flags as ::glib_ffi::GType) }
     }
 
     // FIXME shouldn't be like that
-    pub fn get_flags(&self) -> glib_ffi::GType {
-        unsafe { ffi::g_value_get_flags(self.pointer) }
+    pub fn get_flags(&self) -> GType {
+        unsafe { FromPrimitive::from_u64(ffi::g_value_get_flags(self.pointer)).unwrap() }
     }
 
     fn set_string(&self, v_string: &str) {
@@ -276,13 +276,13 @@ impl GValue {
     }*/
 
     // FIXME shouldn't be like that
-    fn set_gtype(&self, v_gtype: glib_ffi::GType) {
-        unsafe { ffi::g_value_set_gtype(self.pointer, v_gtype) }
+    fn set_gtype(&self, v_gtype: GType) {
+        unsafe { ffi::g_value_set_gtype(self.pointer, v_gtype as ::glib_ffi::GType) }
     }
 
     // FIXME shouldn't be like that
-    fn get_gtype(&self) -> glib_ffi::GType {
-        unsafe { ffi::g_value_get_gtype(self.pointer) }
+    fn get_gtype(&self) -> GType {
+        unsafe { FromPrimitive::from_u64(ffi::g_value_get_gtype(self.pointer)).unwrap() }
     }
 
     pub fn set<T: GValuePublic>(&self, val: &T) {
@@ -293,12 +293,12 @@ impl GValue {
         GValuePrivate::get(self)
     }
 
-    pub fn compatible(src_type: glib_ffi::GType, dest_type: glib_ffi::GType) -> bool {
-        unsafe { to_bool(ffi::g_value_type_compatible(src_type, dest_type)) }
+    pub fn compatible(src_type: GType, dest_type: GType) -> bool {
+        unsafe { to_bool(ffi::g_value_type_compatible(src_type as ::glib_ffi::GType, dest_type as ::glib_ffi::GType)) }
     }
 
-    pub fn transformable(src_type: glib_ffi::GType, dest_type: glib_ffi::GType) -> bool {
-        unsafe { to_bool(ffi::g_value_type_transformable(src_type, dest_type)) }
+    pub fn transformable(src_type: GType, dest_type: GType) -> bool {
+        unsafe { to_bool(ffi::g_value_type_transformable(src_type as ::glib_ffi::GType, dest_type as ::glib_ffi::GType)) }
     }
 
     #[doc(hidden)]
@@ -353,7 +353,6 @@ impl GValuePrivate for i64 {
     }
 }
 
-/*
 impl GValuePrivate for u64 {
     fn get(gvalue: &GValue) -> u64 {
         gvalue.get_uint64()
@@ -363,7 +362,6 @@ impl GValuePrivate for u64 {
         gvalue.set_uint64(*self)
     }
 }
-*/
 
 impl GValuePrivate for bool {
     fn get(gvalue: &GValue) -> bool {
@@ -415,8 +413,8 @@ impl GValuePrivate for f64 {
     }
 }
 
-impl GValuePrivate for glib_ffi::GType {
-    fn get(gvalue: &GValue) -> glib_ffi::GType {
+impl GValuePrivate for GType {
+    fn get(gvalue: &GValue) -> GType {
         gvalue.get_gtype()
     }
 
@@ -441,10 +439,10 @@ impl GValuePrivate for String {
 impl GValuePublic for i32 {}
 impl GValuePublic for u32 {}
 impl GValuePublic for i64 {}
-//impl GValuePublic for u64 {}
+impl GValuePublic for u64 {}
 impl GValuePublic for i8 {}
 impl GValuePublic for u8 {}
-impl GValuePublic for glib_ffi::GType {}
+impl GValuePublic for GType {}
 impl GValuePublic for String {}
 impl GValuePublic for f32 {}
 impl GValuePublic for f64 {}
