@@ -61,6 +61,7 @@ extern crate "cairo-sys" as cairo_ffi;
 extern crate glib;
 
 pub use glib::traits::Connect;
+pub use glib::GType;
 pub use gtk::widgets::GValuePublic;
 
 pub use gtk::BoxTrait as GtkBoxTrait;
@@ -104,9 +105,3 @@ pub use gtk::WindowTrait as GtkWindowTrait;
 pub mod gtk;
 pub mod cairo;
 pub mod gdk;
-
-pub mod ffi {
-    pub mod glib {
-        pub use glib_ffi::*;
-    }
-}
