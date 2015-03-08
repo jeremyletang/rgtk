@@ -132,7 +132,6 @@ pub use self::widgets::{
     //PageSetupUnixDialog
     RecentInfo,
     RecentFilter,
-    RecentFilterInfo,
     RecentData,
     RecentManager,
     TextView,
@@ -278,7 +277,6 @@ pub use gtk_ffi::enums::NumberUpLayout;
 pub use gtk_ffi::enums::PrintPages;
 pub use gtk_ffi::enums::PageSet;
 pub use gtk_ffi::enums::RecentSortType;
-pub use gtk_ffi::enums::RecentFilterFlags;
 pub use gtk_ffi::enums::WidgetHelpType;
 pub use gtk_ffi::enums::TextWindowType;
 pub use gtk_ffi::enums::WrapMode;
