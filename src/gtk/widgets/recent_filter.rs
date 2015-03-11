@@ -13,8 +13,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with rgtk.  If not, see <http://www.gnu.org/licenses/>.
 
-use gtk::{self, ffi};
-use glib::to_bool;
+use gtk::ffi;
 use glib::translate::{ToGlibPtr, ToTmp};
 
 #[derive(Copy)]
@@ -49,14 +48,6 @@ impl RecentFilter {
 
     pub fn add_age(&self, days: i32) -> () {
         unsafe { ffi::gtk_recent_filter_add_age(self.pointer, days) }
-    }
-
-    pub fn get_needed(&self) -> gtk::RecentFilterFlags {
-        unsafe { ffi::gtk_recent_filter_get_needed(self.pointer) }
-    }
-
-    pub fn filter(&self, filter_info: &gtk::RecentFilterInfo) -> bool {
-        unsafe { to_bool(ffi::gtk_recent_filter_filter(self.pointer, &filter_info.get_ffi())) }
     }
 
     pub fn wrap(pointer: *mut ffi::C_GtkRecentFilter) -> Option<RecentFilter> {
