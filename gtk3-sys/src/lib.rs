@@ -24,6 +24,8 @@ pub mod enums;
 
 use libc::{c_int, c_char, c_float, c_uint, c_double, c_long, c_short, c_void, c_ulong, time_t};
 
+pub type c_enum = c_int;
+
 pub use glib_ffi::{
     Gboolean, GFALSE, GTRUE, gpointer, GType, C_GObject, C_GPermission,
     C_GList, C_GSList, C_GError, C_GValue};
@@ -508,6 +510,27 @@ pub struct C_GtkSocket;
 #[repr(C)]
 #[derive(Copy)]
 pub struct C_GtkEventBox;
+
+pub type C_GtkDialogFlags = c_enum;
+pub const GTK_DIALOG_MODAL: C_GtkDialogFlags = 1 << 0;
+pub const GTK_DIALOG_DESTROY_WITH_PARENT: C_GtkDialogFlags = 1 << 1;
+pub const GTK_DIALOG_USE_HEADER_BAR: C_GtkDialogFlags = 1 << 2;
+
+pub type C_GtkResponseType = c_enum;
+pub const GTK_RESPONSE_NONE: C_GtkResponseType = -1;
+pub const GTK_RESPONSE_REJECT: C_GtkResponseType = -2;
+pub const GTK_RESPONSE_ACCEPT: C_GtkResponseType = -3;
+pub const GTK_RESPONSE_DELETE_EVENT: C_GtkResponseType = -4;
+pub const GTK_RESPONSE_OK: C_GtkResponseType = -5;
+pub const GTK_RESPONSE_CANCEL: C_GtkResponseType = -6;
+pub const GTK_RESPONSE_CLOSE: C_GtkResponseType = -7;
+pub const GTK_RESPONSE_YES: C_GtkResponseType = -8;
+pub const GTK_RESPONSE_NO: C_GtkResponseType = -9;
+pub const GTK_RESPONSE_APPLY: C_GtkResponseType = -10;
+pub const GTK_RESPONSE_HELP: C_GtkResponseType = -11;
+
+pub type C_GtkButtonsType = c_enum;
+pub const GTK_BUTTONS_NONE: C_GtkButtonsType = 0;
 
 extern "C" {
 
@@ -1780,8 +1803,8 @@ extern "C" {
     //=========================================================================
     // GtkAppChooserDialog                                               NOT OK
     //=========================================================================
-    //pub fn gtk_app_chooser_dialog_new          (title: *const c_char, flags: enums::DialogFlags, file: *const const C_Gfile) -> *const const C_GtkWidget;
-    pub fn gtk_app_chooser_dialog_new_for_content_type(parent: *mut C_GtkWindow, flags: enums::DialogFlags, content_type: *const c_char) -> *mut C_GtkWidget;
+    //pub fn gtk_app_chooser_dialog_new          (title: *const c_char, flags: C_GtkDialogFlags, file: *const const C_Gfile) -> *const const C_GtkWidget;
+    pub fn gtk_app_chooser_dialog_new_for_content_type(parent: *mut C_GtkWindow, flags: C_GtkDialogFlags, content_type: *const c_char) -> *mut C_GtkWidget;
     pub fn gtk_app_chooser_dialog_get_widget   (_self: *mut C_GtkAppChooserDialog) -> *mut C_GtkWidget;
     pub fn gtk_app_chooser_dialog_set_heading  (_self: *mut C_GtkAppChooserDialog, heading: *const c_char) -> ();
     pub fn gtk_app_chooser_dialog_get_heading  (_self: *mut C_GtkAppChooserDialog) -> *const c_char;
@@ -1789,9 +1812,9 @@ extern "C" {
     //=========================================================================
     // GtkMessageDialog                                                  NOT OK
     //=========================================================================
-    pub fn gtk_message_dialog_new              (parent: *mut C_GtkWindow, flags: enums::DialogFlags, _type: enums::MessageType, buttons: enums::ButtonsType,
+    pub fn gtk_message_dialog_new              (parent: *mut C_GtkWindow, flags: C_GtkDialogFlags, _type: enums::MessageType, buttons: C_GtkButtonsType,
         message_format: *const c_char, ...) -> *mut C_GtkWidget;
-    pub fn gtk_message_dialog_new_with_markup  (parent: *mut C_GtkWindow, flags: enums::DialogFlags, _type: enums::MessageType, buttons: enums::ButtonsType,
+    pub fn gtk_message_dialog_new_with_markup  (parent: *mut C_GtkWindow, flags: C_GtkDialogFlags, _type: enums::MessageType, buttons: C_GtkButtonsType,
         message_format: *const c_char, ...) -> *mut C_GtkWidget;
     pub fn gtk_message_dialog_set_markup       (message_dialog: *mut C_GtkMessageDialog, str: *const c_char) -> ();
     //pub fn gtk_message_dialog_format_secondary_text(message_dialog: *const const C_GtkMessageDialog, message_format: *const c_char, ...) -> ();
@@ -1804,7 +1827,7 @@ extern "C" {
     pub fn gtk_dialog_new                      () -> *mut C_GtkWidget;
     pub fn gtk_dialog_new_with_buttons         (title: *const c_char,
                                                 parent: *mut C_GtkWindow,
-                                                flags: enums::DialogFlags,
+                                                flags: C_GtkDialogFlags,
                                                 first_button_text: *const c_char,
                                                 ...) -> *mut C_GtkWidget;
     pub fn gtk_dialog_run                      (dialog: *mut C_GtkDialog) -> i32;

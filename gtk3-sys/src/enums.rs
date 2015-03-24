@@ -756,37 +756,6 @@ pub enum MessageType {
     Other
 }
 
-/// Prebuilt sets of buttons for the dialog.
-/// If none of these choices are appropriate, simply use GTK_BUTTONS_NONE then call gtk_dialog_add_buttons().
-#[repr(C)]
-#[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
-pub enum ButtonsType {
-    /// no buttons at all
-    None,
-    /// an OK button
-    Ok,
-    /// a Close button
-    Close,
-    /// a Cancel button
-    Cancel,
-    /// Yes and No buttons
-    YesNo,
-    /// OK and Cancel buttons
-    OkCancel
-}
-
-/// Flags used to influence dialog construction.
-#[repr(C)]
-#[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
-pub enum DialogFlags {
-    /// Make the constructed dialog modal, see gtk_window_set_modal()
-    Modal,
-    /// Destroy the dialog when its parent is destroyed, see gtk_window_set_destroy_with_parent()
-    DestroyWithParents,
-    /// Create dialog with actions in header bar instead of action area.
-    UseHeaderBar
-}
-
 /// The type of license for an application.
 /// This enumeration can be expanded at later date.
 #[allow(non_camel_case_types)]
@@ -819,35 +788,6 @@ pub enum License {
     LGPL_2_1_Only,
     /// The GNU Lesser General Public License, version 3.0 only
     LGPL_3_0_Only
-}
-
-/// Predefined values for use as response ids in gtk_dialog_add_button().
-/// All predefined values are negative, GTK+ leaves positive values for application-defined response ids.
-#[repr(C)]
-#[derive(Clone, PartialEq, PartialOrd, Debug, FromPrimitive, Copy)]
-pub enum ResponseType {
-    /// Returned if an action widget has no response id, or if the dialog gets programmatically hidden or destroyed
-    None        = -1,
-    /// Generic response id, not used by GTK+ dialogs
-    Reject      = -2,
-    /// Generic response id, not used by GTK+ dialogs
-    Accept      = -3,
-    /// Returned if the dialog is deleted
-    DeleteEvent = -4,
-    /// Returned by OK buttons in GTK+ dialogs
-    Ok          = -5,
-    /// Returned by Cancel buttons in GTK+ dialogs
-    Cancel      = -6,
-    /// Returned by Close buttons in GTK+ dialogs
-    Close       = -7,
-    /// Returned by Yes buttons in GTK+ dialogs
-    Yes         = -8,
-    /// Returned by No buttons in GTK+ dialogs
-    No          = -9,
-    /// Returned by Apply buttons in GTK+ dialogs
-    Apply       = -10,
-    /// Returned by Help buttons in GTK+ dialogs
-    Help        = -11
 }
 
 /// Describes whether a GtkFileChooser is being used to open existing files or to save to a possibly new file.
