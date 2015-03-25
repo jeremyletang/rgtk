@@ -2,18 +2,15 @@
 //!
 //! A simple text file viewer
 
-#![crate_type = "bin"]
-#![feature(core)]
-
 extern crate rgtk;
 
 use std::io::prelude::*;
 use std::io::BufReader;
 use std::fs::File;
-use std::num::FromPrimitive;
 
 use rgtk::*;
 use rgtk::gtk::signals::{Clicked, DeleteEvent};
+use rgtk::gtk::dialog::{self, Response};
 
 fn main() {
     gtk::init();
@@ -32,13 +29,13 @@ fn main() {
     open_button.set_is_important(true);
     Connect::connect(&open_button, Clicked::new(&mut || {
         // TODO move this to a impl?
-        let file_chooser = gtk::FileChooserDialog::new(
-            "Open File", None, gtk::FileChooserAction::Open,
-            [("Open", gtk::ResponseType::Ok), ("Cancel", gtk::ResponseType::Cancel)]);
-        let response: Option<gtk::ResponseType> = FromPrimitive::from_i32(file_chooser.run());
+        let file_chooser = dialog::FileChooser::new(
+            "Open File", Some(&window), gtk::FileChooserAction::Open,
+            [("Cancel", Response::Cancel), ("Open", Response::Ok)]);
+        let response = file_chooser.run();
 
         match response {
-            Some(gtk::ResponseType::Ok) => {
+            Response::Ok => {
                 let filename = file_chooser.get_filename().unwrap();
                 let file = File::open(&filename).unwrap();
 

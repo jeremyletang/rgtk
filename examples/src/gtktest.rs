@@ -4,6 +4,7 @@ extern crate rgtk;
 
 use rgtk::*;
 use rgtk::gtk::signals::{Clicked, KeyPressEvent, DeleteEvent};
+use rgtk::gtk::dialog::{self, Response};
 use rgtk::gdk::enums::modifier_type;
 
 /// Expands to its argument if GTK+ 3.10 support is configured and to `()` otherwise
@@ -104,20 +105,26 @@ fn main() {
 
     Connect::connect(&button, Clicked::new(&mut || {
 
-        let dialog = gtk::Dialog::with_buttons(
-            "Hello!", None, gtk::DialogFlags::Modal,
-            [("No", 0), ("Yes", 1), ("Yes!", 2)]);
+        let dialog = dialog::Dialog::with_buttons(
+            "Hello!", Some(&window),
+            [("No", Response::User(0)), ("Yes", Response::User(1)),
+            ("Yes!", Response::User(2))]);
 
         let ret = dialog.run();
 
         dialog.destroy();
 
-        entry.set_text(&format!("Clicked {}", ret));
+        if let Response::User(x) = ret {
+            entry.set_text(&format!("Clicked {}", x));
+        }
+        else {
+            entry.set_text("Clicked... something?");
+        }
     }));
 
     Connect::connect(&button_about, Clicked::new(&mut ||{
 
-        let dialog = gtk::AboutDialog::new().unwrap();
+        let dialog = dialog::About::new();
 
         let crew = [
             "James T. Kirk",
@@ -136,24 +143,25 @@ fn main() {
         dialog.destroy();
     }));
     Connect::connect(&button_font, Clicked::new(&mut ||{
-        let dialog = gtk::FontChooserDialog::new("Font chooser test", None).unwrap();
+        let dialog = dialog::FontChooser::new("Font chooser test", Some(&window));
 
         dialog.run();
         dialog.destroy();
     }));
     Connect::connect(&button_recent, Clicked::new(&mut ||{
-        let dialog = gtk::RecentChooserDialog::new(
-            "Recent chooser test", None,
-            [("Ok", gtk::ResponseType::Ok), ("Cancel", gtk::ResponseType::Cancel)]);
+        let dialog = dialog::RecentChooser::new(
+            "Recent chooser test", Some(&window),
+            dialog::Buttons::OkCancel);
 
         dialog.run();
         dialog.destroy();
     }));
     Connect::connect(&file_button, Clicked::new(&mut ||{
+
         //entry.set_text("Clicked!");
-        let dialog = gtk::FileChooserDialog::new(
-            "Choose a file", None, gtk::FileChooserAction::Open,
-            [("Open", gtk::ResponseType::Ok), ("Cancel", gtk::ResponseType::Cancel)]);
+        let dialog = dialog::FileChooser::new(
+            "Choose a file", Some(&window), gtk::FileChooserAction::Open,
+            [("Cancel", Response::Cancel), ("Open", Response::Ok)]);
 
         dialog.set_select_multiple(true);
 
@@ -166,8 +174,9 @@ fn main() {
         println!("Files: {:?}", files);
     }));
     Connect::connect(&app_button, Clicked::new(&mut ||{
+
         //entry.set_text("Clicked!");
-        let dialog = gtk::AppChooserDialog::new_for_content_type(None, gtk::DialogFlags::Modal, "sh").unwrap();
+        let dialog = dialog::AppChooser::new_for_content_type(Some(&window), "sh");
 
         dialog.run();
         dialog.destroy();

@@ -48,9 +48,29 @@ Finally all the gtk widgets implement the trait self::traits::Widget.
 pub use gtk_ffi as ffi;
 pub use gtk_ffi::enums;
 
+use std::ptr;
+
 pub trait FFIWidget: Sized {
     fn unwrap_widget(&self) -> *mut ffi::C_GtkWidget;
     fn wrap_widget(widget: *mut ffi::C_GtkWidget) -> Self;
+}
+
+impl <T: FFIWidget> FFIWidget for Option<T> {
+    fn unwrap_widget(&self) -> *mut ffi::C_GtkWidget {
+        match self {
+            &Some(ref w) => w.unwrap_widget(),
+            &None => ptr::null_mut(),
+        }
+    }
+
+    fn wrap_widget(widget: *mut ffi::C_GtkWidget) -> Option<T> {
+        if widget.is_null() {
+            None
+        }
+        else {
+            Some(FFIWidget::wrap_widget(widget))
+        }
+    }
 }
 
 // These are/should be inlined
@@ -111,25 +131,16 @@ pub use self::widgets::{
     ToolButton,
     ToggleToolButton,
     MenuToolButton,
-    Dialog,
-    AboutDialog,
-    ColorChooserDialog,
-    FontChooserDialog,
-    MessageDialog,
     NoteBook,
     Overlay,
     Layout,
     FileFilter,
-    FileChooserDialog,
     AppInfo,
     AppLaunchContext,
-    AppChooserDialog,
     DrawingArea,
     PageSetup,
     PaperSize,
     PrintSettings,
-    RecentChooserDialog,
-    //PageSetupUnixDialog
     RecentInfo,
     RecentFilter,
     RecentFilterInfo,
@@ -257,12 +268,8 @@ pub use gtk_ffi::enums::SpinType;
 pub use gtk_ffi::enums::SpinButtonUpdatePolicy;
 pub use gtk_ffi::enums::LevelBarMode;
 pub use gtk_ffi::enums::CalendarDisplayOptions;
-pub use gtk_ffi::enums::MessageType;
 pub use gtk_ffi::enums::License;
-pub use gtk_ffi::enums::ResponseType;
-pub use gtk_ffi::enums::DialogFlags;
 pub use gtk_ffi::enums::FileChooserAction;
-pub use gtk_ffi::enums::ButtonsType;
 pub use gtk_ffi::enums::StackTransitionType;
 pub use gtk_ffi::enums::RevealerTransitionType;
 pub use gtk_ffi::enums::ScrollablePolicy;
@@ -309,8 +316,6 @@ pub use self::traits::CheckMenuItemTrait;
 pub use self::traits::ColorChooserTrait;
 pub use self::traits::ComboBoxTrait;
 pub use self::traits::ContainerTrait;
-pub use self::traits::DialogButtons;
-pub use self::traits::DialogTrait;
 pub use self::traits::EditableTrait;
 pub use self::traits::EntryTrait;
 pub use self::traits::FileChooserTrait;
@@ -335,6 +340,8 @@ pub use self::traits::ToolShellTrait;
 pub use self::traits::WidgetTrait;
 pub use self::traits::WindowTrait;
 
+pub use self::dialog::DialogTrait;
+
 /// GTK various struct
 pub use self::types::{
     Tooltip,
@@ -349,3 +356,4 @@ pub mod signals;
 pub mod widgets;
 pub mod types;
 
+pub mod dialog;

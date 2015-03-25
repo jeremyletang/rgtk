@@ -18,7 +18,7 @@
 use libc::c_int;
 use glib::translate::ToGlibPtr;
 
-use gtk::MessageType;
+use gtk::dialog::MessageType;
 use gtk::cast::GTK_INFOBAR;
 use gtk::{self, ffi};
 use glib::{to_bool, to_gboolean};
