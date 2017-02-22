@@ -1,4 +1,4 @@
-THIS REPOSITORY IS DEPRECATED SEE: https://github.com/rust-gnome
+THIS REPOSITORY IS DEPRECATED SEE: https://github.com/gtk-rs
 rgtk [![Build Status](https://travis-ci.org/jeremyletang/rgtk.svg?branch=master)](https://travis-ci.org/jeremyletang/rgtk) [![Gitter chat](https://badges.gitter.im/jeremyletang/rgtk.png)](https://gitter.im/jeremyletang/rgtk)
 ====
 
